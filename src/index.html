@@ -7,8 +7,6 @@
         canvas {
             display: block;
             margin: 40px auto 0;
-            width: 1280px;
-            height: 720px;
             image-rendering: -moz-crisp-edges;
             image-rendering: -webkit-crisp-edges;
             /*noinspection CssOverwrittenProperties*/
@@ -17,9 +15,45 @@
             image-rendering: crisp-edges;
             border: 4px solid black;
         }
+        canvas.noise {
+            width: 1280px;
+            height: 720px;
+        }
+        canvas.tiles {
+            width: 10240px;
+            height: 5760px;
+        }
     </style>
+    <script>
+        function showCanvas(type) {
+            const canvases = document.getElementsByTagName('canvas');
+            for (let i = 0; i < canvases.length; i++) {
+                canvases[i].style = 'display: none';
+            }
+            document.getElementById('canvas_' + type).style = 'display: block';
+        }
+    </script>
 </head>
 <body>
-    <canvas id="canvas" width="320px" height="180px"></canvas>
+    <canvas class="noise" id="canvas_height" width="320px" height="180px" style="display: none"></canvas>
+    <canvas class="noise" id="canvas_moisture" width="320px" height="180px" style="display: none"></canvas>
+    <canvas class="noise" id="canvas_biomes" width="320px" height="180px"></canvas>
+    <canvas class="tiles" id="canvas_tiles" width="2560px" height="1440px" style="display: none"></canvas>
+    <label>
+        <input type="radio" name="type" value="height" onclick="showCanvas('height')" />
+        Height
+    </label>
+    <label>
+        <input type="radio" name="type" value="moisture" onclick="showCanvas('moisture')" />
+        Moisture
+    </label>
+    <label>
+        <input type="radio" name="type" value="biomes" checked="checked" onclick="showCanvas('biomes')" />
+        Biomes
+    </label>
+    <label>
+        <input type="radio" name="type" value="tiles" onclick="showCanvas('tiles')" />
+        Tiles
+    </label>
 </body>
 </html>
