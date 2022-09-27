@@ -1,20 +1,23 @@
 import {NoiseFunction2D} from 'simplex-noise';
+import config from './assets/config.json';
 
-export default function(map: { width: number, height: number }, noise: NoiseFunction2D): number[][] {
+export default function(noise: NoiseFunction2D): number[][] {
+    const size = config.generation.size;
     const heightMap = [];
-    for (let y = 0; y < map.height; y++) {
+    for (let y = 0; y < size.y; y++) {
         heightMap[y] = [];
-        for (let x = 0; x < map.width; x++) {
-            heightMap[y][x] = height(x, y, map, noise);
+        for (let x = 0; x < size.x; x++) {
+            heightMap[y][x] = height(x, y, noise);
         }
     }
 
     return heightMap;
 }
 
-function height(x: number, y: number, map: { width: number, height: number, }, noise: NoiseFunction2D): number {
-    const nx = x / map.width - 0.5;
-    const ny = y / map.height - 0.5;
+function height(x: number, y: number, noise: NoiseFunction2D): number {
+    const size = config.generation.size;
+    const nx = x / size.x - 0.5;
+    const ny = y / size.y - 0.5;
 
     let elevation = 0;
 

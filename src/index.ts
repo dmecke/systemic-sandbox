@@ -1,6 +1,8 @@
 import BiomeRenderer from './BiomeRenderer';
+import Canvas from './Engine/Canvas/Canvas';
+import Debugging from './Debug/Debugging';
+import Game from './Game';
 import HeightMapRenderer from './HeightMapRenderer';
-import ImageLoader from './Canvas/ImageLoader';
 import MoistureMapRenderer from './MoistureMapRenderer';
 import TileRenderer from './TileRenderer';
 import alea from 'alea';
@@ -22,16 +24,28 @@ if (ctxHeight === null || ctxMoisture === null || ctxBiomes === null || ctxTiles
 
 const seeder = alea(Math.random());
 
-const map = { width: 320, height: 180 };
+const heightMap = generateHeightMap(createNoise2D(seeder));
+const moistureMap = generateMoistureMap(createNoise2D(seeder));
 
-const imageLoader = new ImageLoader();
+new HeightMapRenderer(heightMap, ctxHeight).render();
+new MoistureMapRenderer(moistureMap, ctxMoisture).render();
+new BiomeRenderer(heightMap, moistureMap, ctxBiomes).render();
 
-const heightMap = generateHeightMap(map, createNoise2D(seeder));
-const moistureMap = generateMoistureMap(map, createNoise2D(seeder));
+const tileRenderer = new TileRenderer(heightMap, moistureMap, ctxTiles);
+setTimeout(() => tileRenderer.render(), 500);
 
-new HeightMapRenderer(map, heightMap, ctxHeight).render();
-new MoistureMapRenderer(map, moistureMap, ctxMoisture).render();
-new BiomeRenderer(map, heightMap, moistureMap, ctxBiomes).render();
 
-const tileRenderer = new TileRenderer(map, heightMap, moistureMap, ctxTiles, imageLoader);
-setTimeout(() => tileRenderer.render(), 1000);
+
+
+new Canvas('canvas_game');
+
+window.debugging = new Debugging();
+
+window.canvas = document.getElementById('canvas_game') as HTMLCanvasElement;
+const ctx = window.canvas.getContext('2d');
+if (ctx === null) {
+    throw new Error('Could not create context 2d.');
+}
+window.ctx = ctx;
+
+window.addEventListener('load', () => new Game(heightMap, moistureMap));

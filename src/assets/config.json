@@ -1,0 +1,11 @@
+{
+    "tileSize": 8,
+    "characterTileSize": 32,
+
+    "generation": {
+        "size": {
+            "x": 320,
+            "y": 180
+        }
+    }
+}

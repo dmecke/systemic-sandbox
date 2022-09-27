@@ -3,7 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Noise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Macondo&display=swap" rel="stylesheet">
     <style>
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: white;
+            font-family: 'Macondo', cursive;
+        }
+        h1 {
+            text-align: center;
+            font-size: 4rem;
+        }
         canvas {
             display: block;
             margin: 40px auto 0;
@@ -13,7 +28,8 @@
             image-rendering: pixelated;
             /*noinspection CssOverwrittenProperties*/
             image-rendering: crisp-edges;
-            border: 4px solid black;
+            border-radius: 32px;
+            border: 4px solid white;
         }
         canvas.noise {
             width: 1280px;
@@ -22,6 +38,14 @@
         canvas.tiles {
             width: 10240px;
             height: 5760px;
+        }
+        #fps {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .labels {
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
     <script>
@@ -35,25 +59,34 @@
     </script>
 </head>
 <body>
+    <h1>Noise</h1>
+    <canvas class="noise" id="canvas_game" width="320px" height="180px"></canvas>
     <canvas class="noise" id="canvas_height" width="320px" height="180px" style="display: none"></canvas>
     <canvas class="noise" id="canvas_moisture" width="320px" height="180px" style="display: none"></canvas>
-    <canvas class="noise" id="canvas_biomes" width="320px" height="180px"></canvas>
+    <canvas class="noise" id="canvas_biomes" width="320px" height="180px" style="display: none"></canvas>
     <canvas class="tiles" id="canvas_tiles" width="2560px" height="1440px" style="display: none"></canvas>
-    <label>
-        <input type="radio" name="type" value="height" onclick="showCanvas('height')" />
-        Height
-    </label>
-    <label>
-        <input type="radio" name="type" value="moisture" onclick="showCanvas('moisture')" />
-        Moisture
-    </label>
-    <label>
-        <input type="radio" name="type" value="biomes" checked="checked" onclick="showCanvas('biomes')" />
-        Biomes
-    </label>
-    <label>
-        <input type="radio" name="type" value="tiles" onclick="showCanvas('tiles')" />
-        Tiles
-    </label>
+    <div id="fps"></div>
+    <div class="labels">
+        <label>
+            <input type="radio" name="type" value="game" checked="checked" onclick="showCanvas('game')" />
+            Game
+        </label>
+        <label>
+            <input type="radio" name="type" value="height" onclick="showCanvas('height')" />
+            Height
+        </label>
+        <label>
+            <input type="radio" name="type" value="moisture" onclick="showCanvas('moisture')" />
+            Moisture
+        </label>
+        <label>
+            <input type="radio" name="type" value="biomes" onclick="showCanvas('biomes')" />
+            Biomes
+        </label>
+        <label>
+            <input type="radio" name="type" value="tiles" onclick="showCanvas('tiles')" />
+            Tiles
+        </label>
+    </div>
 </body>
 </html>
