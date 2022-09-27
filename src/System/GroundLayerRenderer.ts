@@ -20,18 +20,18 @@ export default class GroundLayerRenderer extends System {
             for (let y = 0; y < size.y; y++) {
                 for (let x = 0; x < size.x; x++) {
                     const biome = factory(layerComponent.heightMap[y][x], layerComponent.moistureMap[y][x]);
-                    this.drawTile(biome, new Vector(x, y).multiply(config.tileSize));
+                    this.drawTile(biome, new Vector(x, y).multiply(config.tileSize), layerComponent.offset[y][x]);
                 }
             }
         });
     }
 
-    drawTile(biome: Biome, position: Vector): void {
+    drawTile(biome: Biome, position: Vector, offset: number): void {
         const imageName = `tiles/${biome.image}`;
         try {
             ImageLoader.instance.fromName(
                 imageName,
-                new Vector(0, 0),
+                new Vector(offset * 8, 0),
                 new Vector(config.tileSize, config.tileSize),
                 position,
             ).draw(window.ctx);

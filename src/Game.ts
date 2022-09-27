@@ -3,6 +3,8 @@ import Fps from './Engine/Debug/Fps';
 import GroundLayerComponent from './Component/GroundLayerComponent';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
+import config from './assets/config.json';
+import factory from './Biome/Factory';
 
 export default class Game {
     private fps = new Fps();
@@ -22,12 +24,12 @@ export default class Game {
         ];
         ImageLoader.loadImages(images);
 
-        this.ecs.addSystem(new GroundLayerRenderer());
-
-        const groundLayer = this.ecs.addEntity();
-        this.ecs.addComponent(groundLayer, new GroundLayerComponent(heightMap, moistureMap));
-
         setTimeout(() => { // workaround: wait until image loading is done
+            this.ecs.addSystem(new GroundLayerRenderer());
+
+            const groundLayer = this.ecs.addEntity();
+            this.ecs.addComponent(groundLayer, this.createGroundLayerComponent());
+
             requestAnimationFrame(() => this.update());
         }, 500);
     }
@@ -44,5 +46,20 @@ export default class Game {
         this.ecs.update();
 
         requestAnimationFrame(() => this.update());
+    }
+
+    private createGroundLayerComponent(): GroundLayerComponent {
+        const size = config.generation.size;
+        const offsets = [];
+        for (let y = 0; y < size.y; y++) {
+            offsets[y] = [];
+            for (let x = 0; x < size.x; x++) {
+                const biome = factory(this.heightMap[y][x], this.moistureMap[y][x]);
+                const img = ImageLoader.instance.getImage(`tiles/${biome.image}`);
+                offsets[y][x] = Math.floor(Math.random() * (img.width as number) / config.tileSize);
+            }
+        }
+
+        return new GroundLayerComponent(this.heightMap, this.moistureMap, offsets);
     }
 }
