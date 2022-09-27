@@ -58,6 +58,14 @@ export default class Vector {
         return new Vector(this._x * multiplier, this._y * multiplier);
     }
 
+    public multiplyX(multiplier: number): Vector {
+        return new Vector(this._x * multiplier, this._y);
+    }
+
+    public multiplyY(multiplier: number): Vector {
+        return new Vector(this._x, this._y * multiplier);
+    }
+
     public divide(divisor: number): Vector {
         if (divisor === 0) {
             throw new Error('Cannot divide by zero.');

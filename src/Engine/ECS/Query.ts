@@ -17,6 +17,17 @@ export default class Query {
         return [...this._entities].map(entity => this.ecs.getComponents(entity));
     }
 
+    one(): ComponentContainer {
+        if (this._entities.size === 0) {
+            throw new Error('No entity found.');
+        }
+        if (this._entities.size > 1) {
+            throw new Error('More than one entity found.');
+        }
+
+        return this.all()[0];
+    }
+
     get size(): number {
         return this._entities.size;
     }
