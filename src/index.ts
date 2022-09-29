@@ -56,4 +56,4 @@ if (ctx === null) {
 }
 window.ctx = ctx;
 
-window.addEventListener('load', () => new Game(heightMap, moistureMap));
+window.addEventListener('load', () => new Game(biomeMap, treeMap));

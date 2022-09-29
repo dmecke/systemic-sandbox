@@ -1,13 +1,13 @@
 import BiomeMap from '../ProceduralGeneration/BiomeMap';
 import Component from '../Engine/ECS/Component';
 import Entity from '../Engine/ECS/Entity';
-import NumberMap from '../ProceduralGeneration/NumberMap';
+import TreeMap from '../ProceduralGeneration/TreeMap';
 
-export default class GroundLayerComponent extends Component {
+export default class TreeLayerComponent extends Component {
 
     constructor(
         readonly biomeMap: BiomeMap,
-        readonly sprite: NumberMap,
+        readonly treeMap: TreeMap,
         readonly camera: Entity,
     ) {
         super();

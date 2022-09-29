@@ -1,8 +1,9 @@
-import Biome from '../Biome/Biome';
+import BiomeMap from './BiomeMap';
 import {NoiseFunction2D} from 'simplex-noise';
+import TreeMap from './TreeMap';
 import config from '../assets/config.json';
 
-export default function(noise: NoiseFunction2D, biomeMap: Biome[][]): boolean[][] {
+export default function(noise: NoiseFunction2D, biomeMap: BiomeMap): TreeMap {
     const size = config.generation.size;
     const map = [];
     for (let y = 0; y < size.y; y++) {
@@ -12,13 +13,11 @@ export default function(noise: NoiseFunction2D, biomeMap: Biome[][]): boolean[][
         }
     }
 
-    const trees = [];
+    const trees = new TreeMap();
     for (let yc = 0; yc < size.y; yc++) {
-        trees[yc] = [];
         for (let xc = 0; xc < size.x; xc++) {
-            trees[yc][xc] = false;
             let max = 0;
-            const biome = biomeMap[yc][xc];
+            const biome = biomeMap.get(xc, yc);
             const r = biome.treeR;
             if (r > 0) {
                 for (let yn = yc - r; yn <= yc + r; yn++) {
@@ -33,7 +32,7 @@ export default function(noise: NoiseFunction2D, biomeMap: Biome[][]): boolean[][
                 }
             }
             if (map[yc][xc] === max) {
-                trees[yc][xc] = true;
+                trees.add(xc, yc);
             }
         }
     }
