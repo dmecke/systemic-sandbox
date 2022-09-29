@@ -1,4 +1,4 @@
-import config from './assets/config.json';
+import config from '../assets/config.json';
 
 export default class HeightMapRenderer {
     constructor(

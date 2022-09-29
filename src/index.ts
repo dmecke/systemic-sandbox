@@ -1,17 +1,17 @@
-import BiomeRenderer from './BiomeRenderer';
+import BiomeRenderer from './Renderer/BiomeRenderer';
 import Canvas from './Engine/Canvas/Canvas';
 import Debugging from './Debug/Debugging';
 import Game from './Game';
-import HeightMapRenderer from './HeightMapRenderer';
-import MoistureMapRenderer from './MoistureMapRenderer';
-import TileRenderer from './TileRenderer';
-import TreeMapRenderer from './TreeMapRenderer';
+import HeightMapRenderer from './Renderer/HeightMapRenderer';
+import MoistureMapRenderer from './Renderer/MoistureMapRenderer';
+import TileRenderer from './Renderer/TileRenderer';
+import TreeMapRenderer from './Renderer/TreeMapRenderer';
 import alea from 'alea';
 import {createNoise2D} from 'simplex-noise';
-import generateBiomeMap from './generateBiomeMap';
-import generateHeightMap from './generateHeightMap';
-import generateMoistureMap from './generateMoistureMap';
-import generateTreeMap from './generateTreeMap';
+import generateBiomeMap from './ProceduralGeneration/generateBiomeMap';
+import generateHeightMap from './ProceduralGeneration/generateHeightMap';
+import generateMoistureMap from './ProceduralGeneration/generateMoistureMap';
+import generateTreeMap from './ProceduralGeneration/generateTreeMap';
 
 const canvasHeight = document.getElementById('canvas_height') as HTMLCanvasElement;
 const canvasMoisture = document.getElementById('canvas_moisture') as HTMLCanvasElement;

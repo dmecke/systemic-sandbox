@@ -1,6 +1,6 @@
-import Biome from './Biome/Biome';
+import Biome from '../Biome/Biome';
 import {NoiseFunction2D} from 'simplex-noise';
-import config from './assets/config.json';
+import config from '../assets/config.json';
 
 export default function(noise: NoiseFunction2D, biomeMap: Biome[][]): boolean[][] {
     const size = config.generation.size;

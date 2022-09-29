@@ -1,6 +1,6 @@
-import ImageLoader from './Engine/Assets/ImageLoader';
-import config from './assets/config.json';
-import factory from './Biome/Factory';
+import ImageLoader from '../Engine/Assets/ImageLoader';
+import config from '../assets/config.json';
+import factory from '../Biome/Factory';
 
 export default class TileRenderer {
     constructor(

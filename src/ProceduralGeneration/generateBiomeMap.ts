@@ -1,6 +1,6 @@
-import Biome from './Biome/Biome';
-import config from './assets/config.json';
-import factory from './Biome/Factory';
+import Biome from '../Biome/Biome';
+import config from '../assets/config.json';
+import factory from '../Biome/Factory';
 
 export default function(heightMap: number[][], moistureMap: number[][]): Biome[][] {
     const size = config.generation.size;
