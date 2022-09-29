@@ -63,6 +63,7 @@
     <canvas class="noise" id="canvas_game" width="320px" height="180px"></canvas>
     <canvas class="noise" id="canvas_height" width="320px" height="180px" style="display: none"></canvas>
     <canvas class="noise" id="canvas_moisture" width="320px" height="180px" style="display: none"></canvas>
+    <canvas class="noise" id="canvas_tree" width="320px" height="180px" style="display: none"></canvas>
     <canvas class="noise" id="canvas_biomes" width="320px" height="180px" style="display: none"></canvas>
     <canvas class="tiles" id="canvas_tiles" width="2560px" height="1440px" style="display: none"></canvas>
     <div id="fps"></div>
@@ -78,6 +79,10 @@
         <label>
             <input type="radio" name="type" value="moisture" onclick="showCanvas('moisture')" />
             Moisture
+        </label>
+        <label>
+            <input type="radio" name="type" value="tree" onclick="showCanvas('tree')" />
+            Trees
         </label>
         <label>
             <input type="radio" name="type" value="biomes" onclick="showCanvas('biomes')" />
