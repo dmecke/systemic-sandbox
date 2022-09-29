@@ -5,11 +5,8 @@ import ECS from './Engine/ECS/ECS';
 import Entity from './Engine/ECS/Entity';
 import EntityFactory from './Engine/ECS/EntityFactory';
 import Fps from './Engine/Debug/Fps';
-import GroundLayerComponent from './Component/GroundLayerComponent';
-import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
 import InputEvaluator from './System/InputEvaluator';
-import NumberMap from './ProceduralGeneration/NumberMap';
 import Position from './Component/Position';
 import RestoreCanvasContext from './System/RestoreCanvasContext';
 import Sprite from './Component/Sprite';
@@ -57,14 +54,18 @@ export default class Game {
 
             this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings
 
-            this.ecs.addSystem(new GroundLayerRenderer());
             this.ecs.addSystem(new SpriteRenderer());
             this.ecs.addSystem(new RestoreCanvasContext());
 
             this.camera = this.entityFactory.create('camera');
 
-            const ground = this.ecs.addEntity();
-            this.ecs.addComponent(ground, this.createGroundLayerComponent());
+            this.biomeMap.all().forEach(data => {
+                const tile = this.ecs.addEntity();
+                this.ecs.addComponent(tile, new Position(data.position.multiply(config.tileSize)));
+                const imageName = `tiles/${data.biome.image}`;
+                const img = ImageLoader.instance.getImage(imageName);
+                this.ecs.addComponent(tile, new Sprite(imageName, new Vector(0, 0), new Vector(config.tileSize, config.tileSize), new Vector(Math.floor(Math.random() * (img.width as number) / config.tileSize) * config.tileSize, 0)));
+            });
 
             this.entityFactory.create('player');
 
@@ -86,20 +87,6 @@ export default class Game {
         this.ecs.update();
 
         requestAnimationFrame(() => this.update());
-    }
-
-    private createGroundLayerComponent(): GroundLayerComponent {
-        const size = config.generation.size;
-        const sprites = new NumberMap();
-        for (let y = 0; y < size.y; y++) {
-            for (let x = 0; x < size.x; x++) {
-                const biome = this.biomeMap.get(x, y);
-                const img = ImageLoader.instance.getImage(`tiles/${biome.image}`);
-                sprites.set(x, y, Math.floor(Math.random() * (img.width as number) / config.tileSize));
-            }
-        }
-
-        return new GroundLayerComponent(this.biomeMap, sprites);
     }
 
     private createTreeAt(position: Vector): void {
