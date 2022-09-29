@@ -8,5 +8,9 @@
             "y": 180
         },
         "heightLevels": 5
+    },
+
+    "controls": {
+        "gamepadThreshold": 0.3
     }
 }

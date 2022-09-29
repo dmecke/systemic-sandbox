@@ -4,5 +4,8 @@
     },
     {
         "name": "CameraComponent"
+    },
+    {
+        "name": "Focus"
     }
 ]

@@ -97,8 +97,8 @@ export default class Vector {
         );
     }
 
-    public tileDistanceTo(other: Vector): number {
-        return Math.abs(this._x - other._x) + Math.abs(this._y - other._y);
+    public round(): Vector {
+        return new Vector(Math.round(this._x), Math.round(this._y));
     }
 
     public floor(): Vector {

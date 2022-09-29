@@ -2,6 +2,7 @@ import Biome from '../Biome/Biome';
 import ImageLoader from '../Engine/Assets/ImageLoader';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
+import Renderable from '../Component/Renderable';
 import System from '../Engine/ECS/System';
 import TreeLayerComponent from '../Component/TreeLayerComponent';
 import Vector from '../Engine/Math/Vector';
@@ -10,19 +11,22 @@ import config from '../assets/config.json';
 export default class TreeLayerRenderer extends System {
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([TreeLayerComponent]);
+    componentsRequired = new Set<Function>([TreeLayerComponent, Renderable]);
 
     update(query: Query): void {
         query.all().forEach(components => {
             const layerComponent = components.get(TreeLayerComponent);
-            const cameraPosition = this.ecs.getComponents(layerComponent.camera).get(Position).position;
+            const renderable = components.get(Renderable);
 
-            this.getMap(layerComponent).forEach(tree => {
-                this.drawTile(
-                    tree.biome,
-                    tree.position.multiply(config.tileSize).subtract(cameraPosition),
-                );
-            });
+            this
+                .getMap(layerComponent, this.ecs.getComponents(renderable.camera).get(Position).position)
+                .forEach(tree => {
+                    this.drawTile(
+                        tree.biome,
+                        tree.position.multiply(config.tileSize),
+                    );
+                })
+            ;
         });
     }
 
@@ -41,9 +45,9 @@ export default class TreeLayerRenderer extends System {
         }
     }
 
-    private getMap(layerComponent: TreeLayerComponent): { biome: Biome, position: Vector }[] {
+    private getMap(layerComponent: TreeLayerComponent, cameraPosition: Vector): { biome: Biome, position: Vector }[] {
         const buffer = new Vector(8, 8);
-        const cameraTopLeftTile = this.ecs.getComponents(layerComponent.camera).get(Position).position.divide(config.tileSize).floor().subtract(buffer);
+        const cameraTopLeftTile = cameraPosition.divide(config.tileSize).floor().subtract(buffer);
         const cameraBottomRightTile = cameraTopLeftTile.add(this.cameraSize).add(buffer.multiply(2));
 
         const map = [];

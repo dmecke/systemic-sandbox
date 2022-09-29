@@ -3,6 +3,7 @@ import GroundLayerComponent from '../Component/GroundLayerComponent';
 import ImageLoader from '../Engine/Assets/ImageLoader';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
+import Renderable from '../Component/Renderable';
 import System from '../Engine/ECS/System';
 import Vector from '../Engine/Math/Vector';
 import config from '../assets/config.json';
@@ -10,19 +11,19 @@ import config from '../assets/config.json';
 export default class GroundLayerRenderer extends System {
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([GroundLayerComponent]);
+    componentsRequired = new Set<Function>([GroundLayerComponent, Renderable]);
 
     update(query: Query): void {
         query.all().forEach(components => {
             const layerComponent = components.get(GroundLayerComponent);
-            const cameraPosition = this.ecs.getComponents(layerComponent.camera).get(Position).position;
+            const renderable = components.get(Renderable);
 
             this
-                .getMap(layerComponent)
+                .getMap(layerComponent, this.ecs.getComponents(renderable.camera).get(Position).position)
                 .forEach(tile => {
                     this.drawTile(
                         tile.biome,
-                        tile.position.multiply(config.tileSize).subtract(cameraPosition),
+                        tile.position.multiply(config.tileSize),//.subtract(cameraPosition),
                         layerComponent.sprite.get(tile.position.x, tile.position.y),
                     );
                 })
@@ -44,9 +45,9 @@ export default class GroundLayerRenderer extends System {
         }
     }
 
-    private getMap(groundLayerComponent: GroundLayerComponent): { biome: Biome, position: Vector }[] {
+    private getMap(groundLayerComponent: GroundLayerComponent, cameraPosition: Vector): { biome: Biome, position: Vector }[] {
         const buffer = new Vector(2, 2);
-        const cameraTopLeftTile = this.ecs.getComponents(groundLayerComponent.camera).get(Position).position.divide(config.tileSize).floor().subtract(buffer);
+        const cameraTopLeftTile = cameraPosition.divide(config.tileSize).floor().subtract(buffer);
         const cameraBottomRightTile = cameraTopLeftTile.add(this.cameraSize).add(buffer.multiply(2));
 
         const map = [];
