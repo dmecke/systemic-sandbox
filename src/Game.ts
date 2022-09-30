@@ -17,6 +17,7 @@ import Sprite from './Component/Sprite';
 import SpriteRenderer from './System/SpriteRenderer';
 import TranslateCanvasContext from './System/TranslateCanvasContext';
 import TreeMap from './ProceduralGeneration/TreeMap';
+import UpdateIsInViewport from './System/UpdateIsInViewport';
 import Vector from './Engine/Math/Vector';
 import config from './assets/config.json';
 import entityFactoryMap from './Entity/entityFactoryMap';
@@ -53,6 +54,8 @@ export default class Game {
             this.ecs.addSystem(new CameraPositionUpdater());
             this.ecs.addSystem(new InputEvaluator());
 
+            this.ecs.addSystem(new UpdateIsInViewport());
+
             this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings
 
             this.ecs.addSystem(new GroundLayerRenderer());
@@ -61,12 +64,12 @@ export default class Game {
 
             this.camera = this.entityFactory.create('camera');
 
-            const player = this.entityFactory.create('player');
-            this.ecs.addComponent(player, new Renderable(this.camera));
-
             const ground = this.ecs.addEntity();
             this.ecs.addComponent(ground, this.createGroundLayerComponent());
             this.ecs.addComponent(ground, new Renderable(this.camera));
+
+            const player = this.entityFactory.create('player');
+            this.ecs.addComponent(player, new Renderable(this.camera));
 
             this.treeMap.all().forEach(position => this.createTreeAt(position));
 

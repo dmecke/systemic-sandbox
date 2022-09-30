@@ -9,7 +9,7 @@ export default class ECS {
     private entities = new Map<Entity, ComponentContainer>();
     private systems = new Map<System, Set<Entity>>();
 
-    private nextEntityId = 0;
+    private nextEntityId = 1;
     private entitiesToDestroy = new Array<Entity>();
 
     addEntity(): Entity {
