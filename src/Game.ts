@@ -111,7 +111,7 @@ export default class Game {
         const biome = this.biomeMap.get(position.x, position.y);
         const imageName = `props/tree_${biome.image}`;
         const img = ImageLoader.instance.getImage(imageName);
-        this.ecs.addComponent(tree, new Sprite(imageName, new Vector(img.width / 2, img.height)));
+        this.ecs.addComponent(tree, new Sprite(imageName, new Vector(img.width / 2, img.height), new Vector(img.width, img.height), new Vector(0, 0)));
         this.ecs.addComponent(tree, new Renderable(this.camera));
     }
 }
