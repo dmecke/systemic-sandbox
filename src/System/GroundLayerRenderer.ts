@@ -1,9 +1,9 @@
 import Biome from '../Biome/Biome';
+import CameraComponent from '../Component/CameraComponent';
 import GroundLayerComponent from '../Component/GroundLayerComponent';
 import ImageLoader from '../Engine/Assets/ImageLoader';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
-import Renderable from '../Component/Renderable';
 import System from '../Engine/ECS/System';
 import Vector from '../Engine/Math/Vector';
 import config from '../assets/config.json';
@@ -11,19 +11,21 @@ import config from '../assets/config.json';
 export default class GroundLayerRenderer extends System {
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([GroundLayerComponent, Renderable]);
+    componentsRequired = new Set<Function>([GroundLayerComponent]);
 
     update(query: Query): void {
+        const camera = this.ecs.findEntitiesWithComponents([CameraComponent])[0];
+        const cameraPosition = this.ecs.getComponents(camera).get(Position).position;
+
         query.all().forEach(components => {
             const layerComponent = components.get(GroundLayerComponent);
-            const renderable = components.get(Renderable);
 
             this
-                .getMap(layerComponent, this.ecs.getComponents(renderable.camera).get(Position).position)
+                .getMap(layerComponent, cameraPosition)
                 .forEach(tile => {
                     this.drawTile(
                         tile.biome,
-                        tile.position.multiply(config.tileSize),//.subtract(cameraPosition),
+                        tile.position.multiply(config.tileSize),
                         layerComponent.sprite.get(tile.position.x, tile.position.y),
                     );
                 })

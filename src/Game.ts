@@ -11,7 +11,6 @@ import ImageLoader from './Engine/Assets/ImageLoader';
 import InputEvaluator from './System/InputEvaluator';
 import NumberMap from './ProceduralGeneration/NumberMap';
 import Position from './Component/Position';
-import Renderable from './Component/Renderable';
 import RestoreCanvasContext from './System/RestoreCanvasContext';
 import Sprite from './Component/Sprite';
 import SpriteRenderer from './System/SpriteRenderer';
@@ -66,10 +65,8 @@ export default class Game {
 
             const ground = this.ecs.addEntity();
             this.ecs.addComponent(ground, this.createGroundLayerComponent());
-            this.ecs.addComponent(ground, new Renderable(this.camera));
 
-            const player = this.entityFactory.create('player');
-            this.ecs.addComponent(player, new Renderable(this.camera));
+            this.entityFactory.create('player');
 
             this.treeMap.all().forEach(position => this.createTreeAt(position));
 
@@ -112,6 +109,5 @@ export default class Game {
         const imageName = `props/tree_${biome.image}`;
         const img = ImageLoader.instance.getImage(imageName);
         this.ecs.addComponent(tree, new Sprite(imageName, new Vector(img.width / 2, img.height), new Vector(img.width, img.height), new Vector(0, 0)));
-        this.ecs.addComponent(tree, new Renderable(this.camera));
     }
 }

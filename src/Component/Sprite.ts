@@ -19,4 +19,5 @@ export default class Sprite extends Component {
             new Vector(data.size.x, data.size.y),
             data.offset ? new Vector(data.offset.x ?? 0, data.offset.y ?? 0) : new Vector(0, 0),
         );
-    }}
+    }
+}

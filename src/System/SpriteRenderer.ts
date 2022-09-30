@@ -2,14 +2,13 @@ import ImageLoader from '../Engine/Assets/ImageLoader';
 import IsInViewport from '../Component/IsInViewport';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
-import Renderable from '../Component/Renderable';
 import Sprite from '../Component/Sprite';
 import System from '../Engine/ECS/System';
 
 export default class SpriteRenderer extends System {
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([Position, Renderable, Sprite, IsInViewport]);
+    componentsRequired = new Set<Function>([Position, Sprite, IsInViewport]);
 
     update(query: Query): void {
         query.all().forEach(components => {
