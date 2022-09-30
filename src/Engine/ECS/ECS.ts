@@ -69,9 +69,9 @@ export default class ECS {
     // eslint-disable-next-line @typescript-eslint/ban-types
     findEntitiesWithComponents(componentClasses: Iterable<Function>): Entity[] {
         const entities = [];
-        for (const entity of this.entities.keys()) {
-            if (this.entities.get(entity).hasAll(componentClasses)) {
-                entities.push(entity);
+        for (const entry of this.entities.entries()) {
+            if (entry[1].hasAll(componentClasses)) {
+                entities.push(entry[0]);
             }
         }
 
