@@ -12,8 +12,8 @@ export default class UpdateIsInViewport extends System {
     componentsRequired = new Set<Function>([Position]);
 
     update(query: Query): void {
-        const camera = this.ecs.findEntitiesWithComponents([CameraComponent])[0];
-        const cameraPosition = this.ecs.getComponents(camera).get(Position).position;
+        const [cameraComponent] = this.ecs.queryAll(Position, CameraComponent)[0];
+        const cameraPosition = cameraComponent.position;
         const buffer = new Vector(2, 2).multiply(config.tileSize);
         const cameraTopLeft = cameraPosition.subtract(buffer);
         const cameraBottomRight = cameraTopLeft.add(this.cameraSize).add(buffer.multiply(2));

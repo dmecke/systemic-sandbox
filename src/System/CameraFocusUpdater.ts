@@ -18,6 +18,8 @@ export default class CameraFocusUpdater extends System {
             target = target.add(position.position);
         });
 
-        this.ecs.getComponents(this.ecs.findEntitiesWithComponents([CameraComponent, Focus])[0]).get(Focus).position = target.divide(query.size);
+        for (const [focusComponent] of this.ecs.queryAll(Focus, CameraComponent)) {
+            focusComponent.position = target.divide(query.size);
+        }
     }
 }

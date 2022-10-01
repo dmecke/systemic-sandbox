@@ -1,4 +1,5 @@
 import Component from './Component';
+import ComponentClass from './ComponentClass';
 import ComponentContainer from './ComponentContainer';
 import Entity from './Entity';
 import Query from './Query';
@@ -8,6 +9,7 @@ export default class ECS {
 
     private entities = new Map<Entity, ComponentContainer>();
     private systems = new Map<System, Set<Entity>>();
+    private readonly componentStorage = new Map<string, Map<Entity, Component>>();
 
     private nextEntityId = 1;
     private entitiesToDestroy = new Array<Entity>();
@@ -27,6 +29,11 @@ export default class ECS {
     addComponent(entity: Entity, component: Component): void {
         this.entities.get(entity).add(component);
         this.checkEntity(entity);
+
+        if (!this.componentStorage.has(component.constructor.name)) {
+            this.componentStorage.set(component.constructor.name, new Map());
+        }
+        this.componentStorage.get(component.constructor.name).set(entity, component);
     }
 
     getComponents(entity: Entity): ComponentContainer {
@@ -66,16 +73,26 @@ export default class ECS {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    findEntitiesWithComponents(componentClasses: Iterable<Function>): Entity[] {
-        const entities = [];
-        for (const entry of this.entities.entries()) {
-            if (entry[1].hasAll(componentClasses)) {
-                entities.push(entry[0]);
+    queryAll<T extends Component>(...types: ComponentClass<T>[]) {
+        const [smallestType] = types.reduce(([smallest, smallestLength], current) => {
+            const currentLength = this.componentStorage.get(current.name).size;
+            if (currentLength < smallestLength) {
+                return [current, currentLength];
+            } else {
+                return [smallest, smallestLength];
             }
-        }
+        }, [null, Infinity]);
 
-        return entities;
+        const allValues = [];
+        this.componentStorage.get(smallestType.name).forEach((component, entity) => {
+            const foundValues = types.map(componentClass => this.componentStorage.get(componentClass.name).get(entity));
+
+            if (!foundValues.some(component => component === null)) {
+                allValues.push(foundValues);
+            }
+        });
+
+        return allValues;
     }
 
     private destroyEntity(entity: Entity): void {
