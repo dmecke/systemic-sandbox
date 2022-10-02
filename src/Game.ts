@@ -1,3 +1,4 @@
+import AddIsInViewport from './System/AddIsInViewport';
 import BiomeMap from './ProceduralGeneration/BiomeMap';
 import CameraFocusUpdater from './System/CameraFocusUpdater';
 import CameraPositionUpdater from './System/CameraPositionUpdater';
@@ -8,12 +9,12 @@ import Fps from './Engine/Debug/Fps';
 import ImageLoader from './Engine/Assets/ImageLoader';
 import InputEvaluator from './System/InputEvaluator';
 import Position from './Component/Position';
+import RemoveIsInViewport from './System/RemoveIsInViewport';
 import RestoreCanvasContext from './System/RestoreCanvasContext';
 import Sprite from './Component/Sprite';
 import SpriteRenderer from './System/SpriteRenderer';
 import TranslateCanvasContext from './System/TranslateCanvasContext';
 import TreeMap from './ProceduralGeneration/TreeMap';
-import UpdateIsInViewport from './System/UpdateIsInViewport';
 import UpdateZIndex from './System/UpdateZIndex';
 import Vector from './Engine/Math/Vector';
 import config from './assets/config.json';
@@ -51,7 +52,8 @@ export default class Game {
             this.ecs.addSystem(new CameraPositionUpdater());
             this.ecs.addSystem(new InputEvaluator());
 
-            this.ecs.addSystem(new UpdateIsInViewport());
+            this.ecs.addSystem(new RemoveIsInViewport());
+            this.ecs.addSystem(new AddIsInViewport());
             this.ecs.addSystem(new UpdateZIndex()); // after update is in viewport
 
             this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings

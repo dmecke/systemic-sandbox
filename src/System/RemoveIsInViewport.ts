@@ -7,10 +7,10 @@ import System from '../Engine/ECS/System';
 import Vector from '../Engine/Math/Vector';
 import config from '../assets/config.json';
 
-export default class UpdateIsInViewport extends System {
+export default class RemoveIsInViewport extends System {
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([Position]);
+    componentsRequired = new Set<Function>([Position, IsInViewport]);
 
     update(query: Query): void {
         const [positionComponent] = this.ecs.queryAll(Position, CameraComponent)[0];
@@ -21,20 +21,8 @@ export default class UpdateIsInViewport extends System {
 
         query
             .entities()
-            .forEach(entity => {
-                const components = this.ecs.getComponents(entity);
-                const isInViewport = viewport.contains(components.get(Position).position);
-
-                if (components.has(IsInViewport)) {
-                    if (!isInViewport) {
-                        this.ecs.removeComponent(entity, IsInViewport);
-                    }
-                } else {
-                    if (isInViewport) {
-                        this.ecs.addComponent(entity, new IsInViewport());
-                    }
-                }
-            })
+            .filter(entity => !viewport.contains(this.ecs.getComponents(entity).get(Position).position))
+            .forEach(entity => this.ecs.removeComponent(entity, IsInViewport))
         ;
     }
 
