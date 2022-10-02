@@ -14,6 +14,7 @@ import SpriteRenderer from './System/SpriteRenderer';
 import TranslateCanvasContext from './System/TranslateCanvasContext';
 import TreeMap from './ProceduralGeneration/TreeMap';
 import UpdateIsInViewport from './System/UpdateIsInViewport';
+import UpdateZIndex from './System/UpdateZIndex';
 import Vector from './Engine/Math/Vector';
 import config from './assets/config.json';
 import entityFactoryMap from './Entity/entityFactoryMap';
@@ -51,6 +52,7 @@ export default class Game {
             this.ecs.addSystem(new InputEvaluator());
 
             this.ecs.addSystem(new UpdateIsInViewport());
+            this.ecs.addSystem(new UpdateZIndex()); // after update is in viewport
 
             this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings
 
@@ -58,16 +60,15 @@ export default class Game {
             this.ecs.addSystem(new RestoreCanvasContext());
 
             this.camera = this.entityFactory.create('camera');
+            this.entityFactory.create('player');
 
             this.biomeMap.all().forEach(data => {
                 const tile = this.ecs.addEntity();
                 this.ecs.addComponent(tile, new Position(data.position.multiply(config.tileSize)));
                 const imageName = `tiles/${data.biome.image}`;
                 const img = ImageLoader.instance.getImage(imageName);
-                this.ecs.addComponent(tile, new Sprite(imageName, new Vector(0, 0), new Vector(config.tileSize, config.tileSize), new Vector(Math.floor(Math.random() * (img.width as number) / config.tileSize) * config.tileSize, 0)));
+                this.ecs.addComponent(tile, new Sprite(imageName, new Vector(0, 0), new Vector(config.tileSize, config.tileSize), new Vector(Math.floor(Math.random() * (img.width as number) / config.tileSize) * config.tileSize, 0), -Infinity));
             });
-
-            this.entityFactory.create('player');
 
             this.treeMap.all().forEach(position => this.createTreeAt(position));
 
@@ -95,6 +96,6 @@ export default class Game {
         const biome = this.biomeMap.get(position.x, position.y);
         const imageName = `props/tree_${biome.image}`;
         const img = ImageLoader.instance.getImage(imageName);
-        this.ecs.addComponent(tree, new Sprite(imageName, new Vector(img.width / 2, img.height), new Vector(img.width, img.height), new Vector(0, 0)));
+        this.ecs.addComponent(tree, new Sprite(imageName, new Vector(img.width / 2, img.height), new Vector(img.width, img.height), new Vector(0, 0), 1));
     }
 }
