@@ -18,10 +18,12 @@ export default class FoodTargetAssigner extends System {
 
         for (const [entity, hunger, position] of query.allEntities(Hunger, Position)) {
             if (hunger.hunger > 50) {
-                plants.sort(([positionA], [positionB]) => positionA.position.distanceSquaredTo(position.position) - positionB.position.distanceSquaredTo(position.position));
-                const [targetPosition] = plants[0];
-                this.ecs.removeComponent(entity, MovementTarget);
-                this.ecs.addComponent(entity, new MovementTarget(targetPosition.position));
+                if (!query.hasComponent(entity, MovementTarget)) {
+                    plants.sort(([positionA], [positionB]) => positionA.position.distanceSquaredTo(position.position) - positionB.position.distanceSquaredTo(position.position));
+                    const [targetPosition] = plants[0];
+                    this.ecs.removeComponent(entity, MovementTarget);
+                    this.ecs.addComponent(entity, new MovementTarget(targetPosition.position));
+                }
             }
         }
     }
