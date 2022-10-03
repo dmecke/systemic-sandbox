@@ -7,10 +7,6 @@ import System from '../Engine/ECS/System';
 import config from '../assets/config.json';
 
 export default class SpreadFire extends System {
-
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([Position, OnFire]);
-
     update(query: Query): void {
         const onFire = query.allComponents(Position, OnFire);
         if (onFire.length === 0) {

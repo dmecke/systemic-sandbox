@@ -20,9 +20,6 @@ export default class GrassGrower extends System {
         super();
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([BiomeComponent]);
-
     update(query: Query): void {
         query.oneComponent(BiomeComponent);
         const grass = query.allComponents(Position, Plant);

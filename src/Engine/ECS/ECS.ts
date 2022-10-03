@@ -43,10 +43,6 @@ export default class ECS {
     }
 
     addSystem(system: System): void {
-        if (system.componentsRequired.size === 0) {
-            throw new Error('System has empty Components list.');
-        }
-
         system.ecs = this;
 
         this.systems.add(system);

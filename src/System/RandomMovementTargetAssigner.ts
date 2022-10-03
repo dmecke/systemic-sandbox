@@ -13,9 +13,6 @@ export default class RandomMovementTargetAssigner extends System {
         super();
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([RandomMovement]);
-
     update(query: Query): void {
         for (const [entity] of query.allEntities(RandomMovement)) {
             if (!query.hasComponent(entity, MovementTarget)) {

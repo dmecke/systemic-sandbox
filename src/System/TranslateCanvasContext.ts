@@ -4,10 +4,6 @@ import Query from '../Engine/ECS/Query';
 import System from '../Engine/ECS/System';
 
 export default class TranslateCanvasContext extends System {
-
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([CameraComponent, Position]);
-
     update(query: Query): void {
         const [positionComponent] = query.oneComponent(Position, CameraComponent);
 

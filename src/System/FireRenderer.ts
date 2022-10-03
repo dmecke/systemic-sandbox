@@ -8,10 +8,6 @@ import System from '../Engine/ECS/System';
 import Vector from '../Engine/Math/Vector';
 
 export default class FireRenderer extends System {
-
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([Position, Sprite, OnFire, InViewport]);
-
     update(query: Query): void {
         for (const [positionComponent, sprite] of query.allComponents(Position, Sprite, OnFire, InViewport)) {
             const image = 'effects/fire';

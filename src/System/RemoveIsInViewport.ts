@@ -8,10 +8,6 @@ import Vector from '../Engine/Math/Vector';
 import config from '../assets/config.json';
 
 export default class RemoveIsInViewport extends System {
-
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([Position, InViewport]);
-
     update(query: Query): void {
         const [positionComponent] = query.allComponents(Position, CameraComponent)[0];
         const cameraPosition = positionComponent.position;

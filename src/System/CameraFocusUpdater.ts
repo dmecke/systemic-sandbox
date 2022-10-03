@@ -7,10 +7,6 @@ import System from '../Engine/ECS/System';
 import Vector from '../Engine/Math/Vector';
 
 export default class CameraFocusUpdater extends System {
-
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([Position, CameraTarget]);
-
     update(query: Query): void {
         let target = new Vector(0, 0);
         for (const [position] of query.allComponents(Position, CameraTarget)) {

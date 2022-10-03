@@ -6,10 +6,6 @@ import System from '../Engine/ECS/System';
 import Vector from '../Engine/Math/Vector';
 
 export default class CameraPositionUpdater extends System {
-
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([CameraComponent, Position, Focus]);
-
     update(query: Query): void {
         const [focus, positionComponent] = query.oneComponent(Focus, Position, CameraComponent);
 

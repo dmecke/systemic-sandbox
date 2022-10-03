@@ -9,10 +9,6 @@ import Vector from '../Engine/Math/Vector';
 import config from '../assets/config.json';
 
 export default class GroundLayerRenderer extends System {
-
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([BiomeComponent]);
-
     update(query: Query): void {
         const [positionComponent] = query.allComponents(Position, CameraComponent)[0];
         const cameraPosition = positionComponent.position;

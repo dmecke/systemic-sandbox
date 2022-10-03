@@ -6,10 +6,6 @@ import Sprite from '../Component/Sprite';
 import System from '../Engine/ECS/System';
 
 export default class SpriteRenderer extends System {
-
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([Position, Sprite, InViewport]);
-
     update(query: Query): void {
         const components = query.allComponents(Sprite, Position, InViewport);
         components.sort(([spriteComponentA], [spriteComponentB]) => spriteComponentB.zIndex - spriteComponentA.zIndex);

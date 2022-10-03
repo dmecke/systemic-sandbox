@@ -7,9 +7,6 @@ import Query from '../Engine/ECS/Query';
 import System from '../Engine/ECS/System';
 
 export default class FoodTargetAssigner extends System {
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    componentsRequired = new Set<Function>([Hunger, Position]);
-
     update(query: Query): void {
         const plants = query.allComponents(Position, Plant, Food);
         if (plants.length === 0) {
