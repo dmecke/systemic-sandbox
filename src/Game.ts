@@ -14,11 +14,14 @@ import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
 import Input from './Input/Input';
 import Interactable from './Component/Interactable';
+import Map from './Map/Map';
 import MoveToMovementTarget from './System/MoveToMovementTarget';
 import MovementTarget from './Component/MovementTarget';
+import MovementTargetRemover from './System/MovementTargetRemover';
 import NumberMap from './ProceduralGeneration/NumberMap';
 import OnFire from './Component/OnFire';
 import Position from './Component/Position';
+import RandomMovementTargetAssigner from './System/RandomMovementTargetAssigner';
 import RemoveIsInViewport from './System/RemoveIsInViewport';
 import RemoveWithoutHealth from './System/RemoveWithoutHealth';
 import RestoreCanvasContext from './System/RestoreCanvasContext';
@@ -38,6 +41,7 @@ export default class Game {
     private readonly ecs = new ECS();
     private readonly entityFactory = new EntityFactory(this.ecs, entityMap, entityFactoryMap);
     private camera: Entity;
+    private readonly map: Map;
 
     constructor(
         private readonly biomeMap: BiomeMap,
@@ -56,15 +60,20 @@ export default class Game {
             'props/tree_swamp',
             'props/tree_snow',
             'characters/player',
+            'characters/sheep',
             'effects/fire',
             'fonts/matchup_pro_12_black',
         ];
         ImageLoader.loadImages(images);
 
+        this.map = new Map(biomeMap);
+
         setTimeout(() => { // workaround: wait until image loading is done
             this.ecs.addSystem(new CameraFocusUpdater());
             this.ecs.addSystem(new CameraPositionUpdater());
+            this.ecs.addSystem(new RandomMovementTargetAssigner(this.map));
             this.ecs.addSystem(new MoveToMovementTarget());
+            this.ecs.addSystem(new MovementTargetRemover());
 
             this.ecs.addSystem(new SpreadFire());
             this.ecs.addSystem(new ApplyFireDamage());
@@ -90,6 +99,10 @@ export default class Game {
             this.ecs.addComponent(ground, this.createGroundLayerComponent());
 
             this.treeMap.all().forEach(position => this.createTreeAt(position));
+            for (let i = 1; i <= config.generation.animals.sheep; i++) {
+                const sheep = this.entityFactory.create('sheep');
+                this.ecs.addComponent(sheep, new Position(this.map.getRandomLandPosition()));
+            }
 
             Input.getInstance().onActionPressed(position => {
                 const factor = window.canvas.clientWidth / window.canvas.width;

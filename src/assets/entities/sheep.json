@@ -1,0 +1,21 @@
+[
+    {
+        "name": "Sprite",
+        "image": "characters/sheep",
+        "anchor": {
+            "x": 16,
+            "y": 19
+        },
+        "size": {
+            "x": 32,
+            "y": 32
+        }
+    },
+    {
+        "name": "Health",
+        "health": 100
+    },
+    {
+        "name": "RandomMovement"
+    }
+]

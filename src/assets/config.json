@@ -7,7 +7,10 @@
             "x": 320,
             "y": 180
         },
-        "heightLevels": 5
+        "heightLevels": 5,
+        "animals": {
+            "sheep": 100
+        }
     },
 
     "controls": {
