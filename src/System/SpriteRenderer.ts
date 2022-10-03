@@ -11,25 +11,19 @@ export default class SpriteRenderer extends System {
     componentsRequired = new Set<Function>([Position, Sprite, IsInViewport]);
 
     update(query: Query): void {
-        query
-            .entities()
-            .sort((a, b) => this.ecs.getComponents(b).get(Sprite).zIndex - this.ecs.getComponents(a).get(Sprite).zIndex)
-            .forEach(entity => {
-                const components = this.ecs.getComponents(entity);
-                const position = components.get(Position).position;
-                const sprite = components.get(Sprite);
-
-                try {
-                    ImageLoader.instance.fromName(
-                        sprite.image,
-                        sprite.offset,
-                        sprite.size,
-                        position.subtract(sprite.anchor),
-                    ).draw();
-                } catch (e) {
-                    throw new Error(`Could not render tile "${(sprite.image)}" at ${position.x}|${position.y}.\n\n${e}`);
-                }
-            })
-        ;
+        const components = query.allComponents(Sprite, Position, IsInViewport);
+        components.sort(([spriteComponentA], [spriteComponentB]) => spriteComponentB.zIndex - spriteComponentA.zIndex);
+        for (const [sprite, positionComponent] of components) {
+            try {
+                ImageLoader.instance.fromName(
+                    sprite.image,
+                    sprite.offset,
+                    sprite.size,
+                    positionComponent.position.subtract(sprite.anchor),
+                ).draw();
+            } catch (e) {
+                throw new Error(`Could not render tile "${(sprite.image)}" at ${positionComponent.position.x}|${positionComponent.position.y}.\n\n${e}`);
+            }
+        }
     }
 }

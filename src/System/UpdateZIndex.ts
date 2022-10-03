@@ -10,9 +10,8 @@ export default class UpdateZIndex extends System {
     componentsRequired = new Set<Function>([Position, Sprite, IsInViewport]);
 
     update(query: Query): void {
-        query
-            .all()
-            .forEach(components => components.get(Sprite).zIndex = -components.get(Position).position.y)
-        ;
+        for (const [positionComponent, spriteComponent] of query.allComponents(Position, Sprite, IsInViewport)) {
+            spriteComponent.zIndex = -positionComponent.position.y;
+        }
     }
 }

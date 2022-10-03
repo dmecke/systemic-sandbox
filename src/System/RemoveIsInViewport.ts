@@ -13,17 +13,17 @@ export default class RemoveIsInViewport extends System {
     componentsRequired = new Set<Function>([Position, IsInViewport]);
 
     update(query: Query): void {
-        const [positionComponent] = this.ecs.queryAll(Position, CameraComponent)[0];
+        const [positionComponent] = query.allComponents(Position, CameraComponent)[0];
         const cameraPosition = positionComponent.position;
         const buffer = new Vector(2, 2).multiply(config.tileSize);
         const cameraTopLeft = cameraPosition.subtract(buffer);
         const viewport = new Area(cameraTopLeft, this.cameraSize.add(buffer.multiply(2)));
 
-        query
-            .entities()
-            .filter(entity => !viewport.contains(this.ecs.getComponents(entity).get(Position).position))
-            .forEach(entity => this.ecs.removeComponent(entity, IsInViewport))
-        ;
+        for (const [entity, positionComponent] of query.allEntities(Position, IsInViewport)) {
+            if (!viewport.contains(positionComponent.position)) {
+                this.ecs.removeComponent(entity, IsInViewport);
+            }
+        }
     }
 
     private get cameraSize(): Vector {

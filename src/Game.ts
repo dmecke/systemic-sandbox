@@ -1,6 +1,7 @@
 import AddIsInViewport from './System/AddIsInViewport';
 import BiomeComponent from './Component/BiomeComponent';
 import BiomeMap from './ProceduralGeneration/BiomeMap';
+import CameraComponent from './Component/CameraComponent';
 import CameraFocusUpdater from './System/CameraFocusUpdater';
 import CameraPositionUpdater from './System/CameraPositionUpdater';
 import ECS from './Engine/ECS/ECS';
@@ -80,7 +81,8 @@ export default class Game {
 
             Input.getInstance().onActionPressed(position => {
                 const factor = window.canvas.clientWidth / window.canvas.width;
-                const target = this.ecs.getComponents(this.camera).get(Position).position.add(position.divide(factor)).round();
+                const [positionComponent] = this.ecs.query.oneComponent(Position, CameraComponent);
+                const target = positionComponent.position.add(position.divide(factor)).round();
                 this.ecs.removeComponent(player, MovementTarget);
                 this.ecs.addComponent(player, new MovementTarget(target));
             });
@@ -119,7 +121,7 @@ export default class Game {
 
     private createTreeAt(position: Vector): void {
         const tree = this.entityFactory.create('tree');
-        this.ecs.getComponents(tree).get(Position).position = position.multiply(config.tileSize).add(new Vector(config.tileSize, config.tileSize).divide(2));
+        this.ecs.addComponent(tree, new Position(position.multiply(config.tileSize).add(new Vector(config.tileSize, config.tileSize).divide(2))));
         const biome = this.biomeMap.get(position.x, position.y);
         const imageName = `props/tree_${biome.image}`;
         const img = ImageLoader.instance.getImage(imageName);

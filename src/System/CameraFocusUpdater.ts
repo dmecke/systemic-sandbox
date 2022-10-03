@@ -13,13 +13,12 @@ export default class CameraFocusUpdater extends System {
 
     update(query: Query): void {
         let target = new Vector(0, 0);
-        query.all().forEach(components => {
-            const position = components.get(Position);
+        for (const [position] of query.allComponents(Position, CameraTarget)) {
             target = target.add(position.position);
-        });
+        }
 
-        for (const [focusComponent] of this.ecs.queryAll(Focus, CameraComponent)) {
-            focusComponent.position = target.divide(query.size);
+        for (const [focusComponent] of query.allComponents(Focus, CameraComponent)) {
+            focusComponent.position = target.divide(query.allComponents(Position, CameraTarget).length);
         }
     }
 }

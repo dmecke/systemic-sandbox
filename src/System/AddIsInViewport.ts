@@ -13,18 +13,17 @@ export default class AddIsInViewport extends System {
     componentsRequired = new Set<Function>([Position]);
 
     update(query: Query): void {
-        const [positionComponent] = this.ecs.queryAll(Position, CameraComponent)[0];
+        const [positionComponent] = query.allComponents(Position, CameraComponent)[0];
         const cameraPosition = positionComponent.position;
         const buffer = new Vector(2, 2).multiply(config.tileSize);
         const cameraTopLeft = cameraPosition.subtract(buffer);
         const viewport = new Area(cameraTopLeft, this.cameraSize.add(buffer.multiply(2)));
 
-        query
-            .entities()
-            .filter(entity => !this.ecs.getComponents(entity).has(IsInViewport))
-            .filter(entity => viewport.contains(this.ecs.getComponents(entity).get(Position).position))
-            .forEach(entity => this.ecs.addComponent(entity, new IsInViewport()))
-        ;
+        for (const [entity, positionComponent] of query.allEntities(Position)) {
+            if (!query.hasComponent(entity, IsInViewport) && viewport.contains(positionComponent.position)) {
+                this.ecs.addComponent(entity, new IsInViewport());
+            }
+        }
     }
 
     private get cameraSize(): Vector {

@@ -14,12 +14,10 @@ export default class GroundLayerRenderer extends System {
     componentsRequired = new Set<Function>([BiomeComponent]);
 
     update(query: Query): void {
-        const [positionComponent] = this.ecs.queryAll(Position, CameraComponent)[0];
+        const [positionComponent] = query.allComponents(Position, CameraComponent)[0];
         const cameraPosition = positionComponent.position;
 
-        query.all().forEach(components => {
-            const biomeComponent = components.get(BiomeComponent);
-
+        for (const [biomeComponent] of query.allComponents(BiomeComponent)) {
             this
                 .getMap(biomeComponent, cameraPosition)
                 .forEach(tile => {
@@ -30,7 +28,7 @@ export default class GroundLayerRenderer extends System {
                     );
                 })
             ;
-        });
+        }
     }
 
     drawTile(biome: Biome, position: Vector, sprite: number): void {

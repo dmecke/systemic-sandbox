@@ -9,13 +9,13 @@ export default class TranslateCanvasContext extends System {
     componentsRequired = new Set<Function>([CameraComponent, Position]);
 
     update(query: Query): void {
-        const components = query.one();
+        const [positionComponent] = query.oneComponent(Position, CameraComponent);
 
         window.ctx.clearRect(0, 0, window.ctx.canvas.width, window.ctx.canvas.height);
         window.ctx.save();
         window.ctx.translate(
-            Math.floor(-components.get(Position).position.x),
-            Math.floor(-components.get(Position).position.y),
+            Math.floor(-positionComponent.position.x),
+            Math.floor(-positionComponent.position.y),
         );
     }
 }
