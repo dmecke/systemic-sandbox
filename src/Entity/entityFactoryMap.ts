@@ -10,6 +10,7 @@ import Plant from '../Component/Plant';
 import Player from '../Component/Player';
 import Position from '../Component/Position';
 import RandomMovement from '../Component/RandomMovement';
+import Sheep from '../Component/Sheep';
 import Sprite from '../Component/Sprite';
 
 const factories = new Map();
@@ -25,6 +26,7 @@ factories.set('Plant', Plant);
 factories.set('Player', Player);
 factories.set('Position', Position);
 factories.set('RandomMovement', RandomMovement);
+factories.set('Sheep', Sheep);
 factories.set('Sprite', Sprite);
 
 export default factories;

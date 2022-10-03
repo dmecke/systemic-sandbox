@@ -6,6 +6,7 @@ import BiomeMap from './ProceduralGeneration/BiomeMap';
 import CameraComponent from './Component/CameraComponent';
 import CameraFocusUpdater from './System/CameraFocusUpdater';
 import CameraPositionUpdater from './System/CameraPositionUpdater';
+import DisplayStatistics from './System/DisplayStatistics';
 import ECS from './Engine/ECS/ECS';
 import EatGrass from './System/EatGrass';
 import Entity from './Engine/ECS/Entity';
@@ -100,6 +101,7 @@ export default class Game {
             this.ecs.addSystem(new SpriteRenderer());
             this.ecs.addSystem(new FireRenderer()); // after sprite renderer
             this.ecs.addSystem(new RestoreCanvasContext());
+            this.ecs.addSystem(new DisplayStatistics());
 
             this.camera = this.entityFactory.create('camera');
 
