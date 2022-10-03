@@ -110,10 +110,17 @@ export default class Game {
 
     private createTreeAt(position: Vector): void {
         const tree = this.entityFactory.create('tree');
-        this.ecs.getComponents(tree).get(Position).position = position.multiply(config.tileSize);
+        this.ecs.getComponents(tree).get(Position).position = position.multiply(config.tileSize).add(new Vector(config.tileSize, config.tileSize).divide(2));
         const biome = this.biomeMap.get(position.x, position.y);
         const imageName = `props/tree_${biome.image}`;
         const img = ImageLoader.instance.getImage(imageName);
-        this.ecs.addComponent(tree, new Sprite(imageName, new Vector(img.width / 2, img.height), new Vector(img.width, img.height), new Vector(0, 0), 1));
+        const sprite = new Sprite(
+            imageName,
+            biome.treeOffset,
+            new Vector(img.width, img.height),
+            new Vector(0, 0),
+            1,
+        );
+        this.ecs.addComponent(tree, sprite);
     }
 }
