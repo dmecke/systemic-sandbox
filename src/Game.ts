@@ -66,7 +66,9 @@ export default class Game {
             this.ecs.addSystem(new RestoreCanvasContext());
 
             this.camera = this.entityFactory.create('camera');
-            this.entityFactory.create('player');
+
+            const player = this.entityFactory.create('player');
+            this.ecs.addComponent(player, new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).divide(2)));
 
             const ground = this.ecs.addEntity();
             this.ecs.addComponent(ground, this.createGroundLayerComponent());

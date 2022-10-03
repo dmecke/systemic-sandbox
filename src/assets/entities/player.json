@@ -3,11 +3,6 @@
         "name": "Player"
     },
     {
-        "name": "Position",
-        "x": 256,
-        "y": 256
-    },
-    {
         "name": "Sprite",
         "image": "characters/player",
         "anchor": {

@@ -30,6 +30,10 @@ function height(x: number, y: number, noise: NoiseFunction2D): number {
 
     elevation = elevation / (1.00 + 0.50 + 0.25 + 0.13 + 0.06 + 0.03);
     elevation = Math.pow(elevation, 2.00);
+
+    const distance = 1 - (1 - Math.pow(nx, 2)) * (1 - Math.pow(ny, 2));
+    elevation = (elevation + (1 - distance * 4)) / 2;
+
     elevation = Math.round(elevation * config.generation.heightLevels) / config.generation.heightLevels;
 
     return elevation;
