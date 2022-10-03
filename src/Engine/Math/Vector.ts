@@ -91,10 +91,11 @@ export default class Vector {
     }
 
     public distanceTo(other: Vector): number {
-        return Math.sqrt(
-            Math.pow(this._x - other._x, 2) +
-            Math.pow(this._y - other._y, 2)
-        );
+        return Math.sqrt(this.distanceSquaredTo(other));
+    }
+
+    public distanceSquaredTo(other: Vector): number {
+        return Math.pow(this._x - other._x, 2) + Math.pow(this._y - other._y, 2);
     }
 
     public round(): Vector {

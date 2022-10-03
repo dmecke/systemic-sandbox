@@ -1,5 +1,6 @@
 import BiomeComponent from '../Component/BiomeComponent';
 import Flammable from '../Component/Flammable';
+import Food from '../Component/Food';
 import Health from '../Component/Health';
 import Interactable from '../Component/Interactable';
 import Map from '../Map/Map';
@@ -37,6 +38,8 @@ export default class GrassGrower extends System {
                     this.ecs.addComponent(plant, new Flammable(100));
                     this.ecs.addComponent(plant, new Health(50));
                     this.ecs.addComponent(plant, new Interactable());
+                    this.ecs.addComponent(plant, new Plant());
+                    this.ecs.addComponent(plant, new Food());
                 }
             }
         }

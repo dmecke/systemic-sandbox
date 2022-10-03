@@ -1,18 +1,22 @@
 import AddIsInViewport from './System/AddIsInViewport';
 import ApplyFireDamage from './System/ApplyFireDamage';
+import ApplyHungerDamage from './System/ApplyHungerDamage';
 import BiomeComponent from './Component/BiomeComponent';
 import BiomeMap from './ProceduralGeneration/BiomeMap';
 import CameraComponent from './Component/CameraComponent';
 import CameraFocusUpdater from './System/CameraFocusUpdater';
 import CameraPositionUpdater from './System/CameraPositionUpdater';
 import ECS from './Engine/ECS/ECS';
+import EatGrass from './System/EatGrass';
 import Entity from './Engine/ECS/Entity';
 import EntityFactory from './Engine/ECS/EntityFactory';
 import FireRenderer from './System/FireRenderer';
+import FoodTargetAssigner from './System/FoodTargetAssigner';
 import Fps from './Engine/Debug/Fps';
 import GrassGrower from './System/GrassGrower';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
+import IncreaseHunger from './System/IncreaseHunger';
 import Input from './Input/Input';
 import Interactable from './Component/Interactable';
 import Map from './Map/Map';
@@ -77,9 +81,13 @@ export default class Game {
             this.ecs.addSystem(new MoveToMovementTarget());
             this.ecs.addSystem(new MovementTargetRemover());
 
+            this.ecs.addSystem(new IncreaseHunger());
+            this.ecs.addSystem(new FoodTargetAssigner());
+            this.ecs.addSystem(new EatGrass());
             this.ecs.addSystem(new GrassGrower(this.map));
             this.ecs.addSystem(new SpreadFire());
             this.ecs.addSystem(new ApplyFireDamage());
+            this.ecs.addSystem(new ApplyHungerDamage());
             this.ecs.addSystem(new RemoveWithoutHealth());
 
             this.ecs.addSystem(new RemoveIsInViewport());

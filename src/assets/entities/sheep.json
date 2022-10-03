@@ -20,5 +20,8 @@
     },
     {
         "name": "Flammable"
+    },
+    {
+        "name": "Hunger"
     }
 ]
