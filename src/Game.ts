@@ -9,7 +9,9 @@ import EntityFactory from './Engine/ECS/EntityFactory';
 import Fps from './Engine/Debug/Fps';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
-import InputEvaluator from './System/InputEvaluator';
+import Input from './Input/Input';
+import MoveToMovementTarget from './System/MoveToMovementTarget';
+import MovementTarget from './Component/MovementTarget';
 import NumberMap from './ProceduralGeneration/NumberMap';
 import Position from './Component/Position';
 import RemoveIsInViewport from './System/RemoveIsInViewport';
@@ -54,7 +56,7 @@ export default class Game {
         setTimeout(() => { // workaround: wait until image loading is done
             this.ecs.addSystem(new CameraFocusUpdater());
             this.ecs.addSystem(new CameraPositionUpdater());
-            this.ecs.addSystem(new InputEvaluator());
+            this.ecs.addSystem(new MoveToMovementTarget());
 
             this.ecs.addSystem(new RemoveIsInViewport());
             this.ecs.addSystem(new AddIsInViewport());
@@ -75,6 +77,13 @@ export default class Game {
             this.ecs.addComponent(ground, this.createGroundLayerComponent());
 
             this.treeMap.all().forEach(position => this.createTreeAt(position));
+
+            Input.getInstance().onActionPressed(position => {
+                const factor = window.canvas.clientWidth / window.canvas.width;
+                const target = this.ecs.getComponents(this.camera).get(Position).position.add(position.divide(factor)).round();
+                this.ecs.removeComponent(player, MovementTarget);
+                this.ecs.addComponent(player, new MovementTarget(target));
+            });
 
             requestAnimationFrame(() => this.update());
         }, 500);

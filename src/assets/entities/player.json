@@ -7,7 +7,7 @@
         "image": "characters/player",
         "anchor": {
             "x": 16,
-            "y": 32
+            "y": 19
         },
         "size": {
             "x": 32,
