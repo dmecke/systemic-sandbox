@@ -11,6 +11,6 @@
     },
 
     "controls": {
-        "gamepadThreshold": 0.3
+        "clickDistance": 8
     }
 }

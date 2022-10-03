@@ -11,6 +11,7 @@ import Fps from './Engine/Debug/Fps';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
 import Input from './Input/Input';
+import Interactable from './Component/Interactable';
 import MoveToMovementTarget from './System/MoveToMovementTarget';
 import MovementTarget from './Component/MovementTarget';
 import NumberMap from './ProceduralGeneration/NumberMap';
@@ -83,8 +84,19 @@ export default class Game {
                 const factor = window.canvas.clientWidth / window.canvas.width;
                 const [positionComponent] = this.ecs.query.oneComponent(Position, CameraComponent);
                 const target = positionComponent.position.add(position.divide(factor)).round();
-                this.ecs.removeComponent(player, MovementTarget);
-                this.ecs.addComponent(player, new MovementTarget(target));
+
+                const entities = this
+                    .ecs
+                    .query
+                    .allEntities(Position, Interactable)
+                    .filter(([, positionComponent]) => positionComponent.position.distanceTo(target) < config.controls.clickDistance)
+                ;
+                if (entities.length === 0) {
+                    this.ecs.removeComponent(player, MovementTarget);
+                    this.ecs.addComponent(player, new MovementTarget(target));
+                } else {
+                    // @todo interact
+                }
             });
 
             requestAnimationFrame(() => this.update());
