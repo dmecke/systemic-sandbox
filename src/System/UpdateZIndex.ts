@@ -12,9 +12,7 @@ export default class UpdateZIndex extends System {
     update(query: Query): void {
         query
             .all()
-            .forEach(components => {
-                components.get(Sprite).zIndex = -(components.get(Position).position.y + components.get(Sprite).anchor.y);
-            })
+            .forEach(components => components.get(Sprite).zIndex = -components.get(Position).position.y)
         ;
     }
 }
