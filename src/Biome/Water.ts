@@ -6,4 +6,5 @@ export default class Water implements Biome {
     image = 'water';
     treeR = -1;
     treeOffset = new Vector(0, 0);
+    grassChance = 0;
 }

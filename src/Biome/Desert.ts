@@ -6,4 +6,5 @@ export default class Desert implements Biome {
     image = 'desert';
     treeR = 6;
     treeOffset = new Vector(4, 8);
+    grassChance = 1;
 }

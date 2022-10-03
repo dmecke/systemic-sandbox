@@ -18,6 +18,7 @@
     },
 
     "systems": {
-        "fireSpreadDistance": 40
+        "fireSpreadDistance": 40,
+        "grassGrowRate": 2
     }
 }

@@ -1,3 +1,4 @@
+import Biome from '../Biome/Biome';
 import BiomeMap from '../ProceduralGeneration/BiomeMap';
 import Rng from '../Engine/Math/Rng';
 import Vector from '../Engine/Math/Vector';
@@ -10,7 +11,7 @@ export default class Map {
     ) {
     }
 
-    getRandomLandPosition(): Vector {
+    getRandomLandGridCell(): Vector {
         const rng = Rng.getInstance(window.seed.toString());
         let position: Vector;
         do {
@@ -20,6 +21,10 @@ export default class Map {
             );
         } while (this.biomeMap.get(position.x, position.y) instanceof Water)
 
-        return position.multiply(config.tileSize);
+        return position;
+    }
+
+    getBiomeAt(position: Vector): Biome {
+        return this.biomeMap.get(position.x, position.y);
     }
 }

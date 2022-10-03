@@ -6,4 +6,5 @@ export default class Jungle implements Biome {
     image = 'jungle';
     treeR = 1;
     treeOffset = new Vector(24, 52);
+    grassChance = 20;
 }

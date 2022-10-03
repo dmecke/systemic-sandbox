@@ -17,5 +17,8 @@
     },
     {
         "name": "RandomMovement"
+    },
+    {
+        "name": "Flammable"
     }
 ]

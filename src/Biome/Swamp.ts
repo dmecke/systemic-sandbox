@@ -6,4 +6,5 @@ export default class Swamp implements Biome {
     image = 'swamp';
     treeR = 3;
     treeOffset = new Vector(22, 42);
+    grassChance = 30;
 }

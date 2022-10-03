@@ -6,4 +6,5 @@ export default class Grassland implements Biome {
     image = 'grassland';
     treeR = 2;
     treeOffset = new Vector(14, 27);
+    grassChance = 50;
 }

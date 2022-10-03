@@ -6,4 +6,5 @@ export default class Snow implements Biome {
     image = 'snow';
     treeR = 4;
     treeOffset = new Vector(20, 36);
+    grassChance = 10;
 }

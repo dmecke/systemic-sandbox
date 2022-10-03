@@ -5,4 +5,5 @@ export default interface Biome {
     image: string;
     treeR: number;
     treeOffset: Vector,
+    grassChance: number;
 }

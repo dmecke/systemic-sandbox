@@ -10,6 +10,7 @@ import Entity from './Engine/ECS/Entity';
 import EntityFactory from './Engine/ECS/EntityFactory';
 import FireRenderer from './System/FireRenderer';
 import Fps from './Engine/Debug/Fps';
+import GrassGrower from './System/GrassGrower';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
 import Input from './Input/Input';
@@ -59,6 +60,7 @@ export default class Game {
             'props/tree_jungle',
             'props/tree_swamp',
             'props/tree_snow',
+            'props/grass',
             'characters/player',
             'characters/sheep',
             'effects/fire',
@@ -75,6 +77,7 @@ export default class Game {
             this.ecs.addSystem(new MoveToMovementTarget());
             this.ecs.addSystem(new MovementTargetRemover());
 
+            this.ecs.addSystem(new GrassGrower(this.map));
             this.ecs.addSystem(new SpreadFire());
             this.ecs.addSystem(new ApplyFireDamage());
             this.ecs.addSystem(new RemoveWithoutHealth());
@@ -101,7 +104,7 @@ export default class Game {
             this.treeMap.all().forEach(position => this.createTreeAt(position));
             for (let i = 1; i <= config.generation.animals.sheep; i++) {
                 const sheep = this.entityFactory.create('sheep');
-                this.ecs.addComponent(sheep, new Position(this.map.getRandomLandPosition()));
+                this.ecs.addComponent(sheep, new Position(this.map.getRandomLandGridCell().multiply(config.tileSize)));
             }
 
             Input.getInstance().onActionPressed(position => {
