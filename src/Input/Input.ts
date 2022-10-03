@@ -1,5 +1,6 @@
 import Gamepads from '../Engine/Input/Gamepads';
 import Keyboard from '../Engine/Input/Keyboard';
+import Mouse from '../Engine/Input/Mouse';
 import Vector from '../Engine/Math/Vector';
 import Xbox360Controller from '../Engine/Input/Mapping/Xbox360Controller';
 import config from '../assets/config.json';
@@ -10,6 +11,7 @@ export default class Input {
 
     private keyboard = new Keyboard();
     private gamepads = new Gamepads();
+    private mouse = new Mouse();
 
     private keyboardButtons = {
         right: false,
@@ -84,8 +86,9 @@ export default class Input {
         ).normalize();
     }
 
-    onActionPressed(callback: () => void): void {
-        this.keyboard.onPressedOneOf(['Space', 'Enter', 'NumpadEnter'], () => callback());
-        this.gamepads.onPressed(Xbox360Controller.A, () => callback());
+    onActionPressed(callback: (position: Vector) => void): void {
+        this.keyboard.onPressedOneOf(['Space', 'Enter', 'NumpadEnter'], () => callback(new Vector(0, 0)));
+        this.gamepads.onPressed(Xbox360Controller.A, () => callback(new Vector(0, 0)));
+        this.mouse.onClicked(0, position => callback(position));
     }
 }
