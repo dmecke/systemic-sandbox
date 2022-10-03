@@ -1,11 +1,15 @@
 export default class NumberMap {
-    private map = new Map();
+    private map: Map<number, Map<number, number>> = new Map();
 
     set(x: number, y: number, number: number): void {
-        this.map.set(`${x}|${y}`, number);
+        if (!this.map.has(x)) {
+            this.map.set(x, new Map());
+        }
+
+        this.map.get(x).set(y, number);
     }
 
     get(x: number, y: number): number {
-        return this.map.get(`${x}|${y}`);
+        return this.map.get(x).get(y);
     }
 }

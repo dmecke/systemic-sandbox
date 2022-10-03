@@ -1,4 +1,5 @@
 import AddIsInViewport from './System/AddIsInViewport';
+import BiomeComponent from './Component/BiomeComponent';
 import BiomeMap from './ProceduralGeneration/BiomeMap';
 import CameraFocusUpdater from './System/CameraFocusUpdater';
 import CameraPositionUpdater from './System/CameraPositionUpdater';
@@ -6,8 +7,10 @@ import ECS from './Engine/ECS/ECS';
 import Entity from './Engine/ECS/Entity';
 import EntityFactory from './Engine/ECS/EntityFactory';
 import Fps from './Engine/Debug/Fps';
+import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
 import InputEvaluator from './System/InputEvaluator';
+import NumberMap from './ProceduralGeneration/NumberMap';
 import Position from './Component/Position';
 import RemoveIsInViewport from './System/RemoveIsInViewport';
 import RestoreCanvasContext from './System/RestoreCanvasContext';
@@ -58,19 +61,15 @@ export default class Game {
 
             this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings
 
+            this.ecs.addSystem(new GroundLayerRenderer());
             this.ecs.addSystem(new SpriteRenderer());
             this.ecs.addSystem(new RestoreCanvasContext());
 
             this.camera = this.entityFactory.create('camera');
             this.entityFactory.create('player');
 
-            this.biomeMap.all().forEach(data => {
-                const tile = this.ecs.addEntity();
-                this.ecs.addComponent(tile, new Position(data.position.multiply(config.tileSize)));
-                const imageName = `tiles/${data.biome.image}`;
-                const img = ImageLoader.instance.getImage(imageName);
-                this.ecs.addComponent(tile, new Sprite(imageName, new Vector(0, 0), new Vector(config.tileSize, config.tileSize), new Vector(Math.floor(Math.random() * (img.width as number) / config.tileSize) * config.tileSize, 0), -Infinity));
-            });
+            const ground = this.ecs.addEntity();
+            this.ecs.addComponent(ground, this.createGroundLayerComponent());
 
             this.treeMap.all().forEach(position => this.createTreeAt(position));
 
@@ -90,6 +89,20 @@ export default class Game {
         this.ecs.update();
 
         requestAnimationFrame(() => this.update());
+    }
+
+    private createGroundLayerComponent(): BiomeComponent {
+        const size = config.generation.size;
+        const spriteOffsets = new NumberMap();
+        for (let y = 0; y < size.y; y++) {
+            for (let x = 0; x < size.x; x++) {
+                const biome = this.biomeMap.get(x, y);
+                const img = ImageLoader.instance.getImage(`tiles/${biome.image}`);
+                spriteOffsets.set(x, y, Math.floor(Math.random() * (img.width as number) / config.tileSize));
+            }
+        }
+
+        return new BiomeComponent(this.biomeMap, spriteOffsets);
     }
 
     private createTreeAt(position: Vector): void {
