@@ -25,7 +25,7 @@ export default class SpriteRenderer extends System {
                         sprite.offset,
                         sprite.size,
                         position.subtract(sprite.anchor),
-                    ).draw(window.ctx);
+                    ).draw();
                 } catch (e) {
                     throw new Error(`Could not render tile "${(sprite.image)}" at ${position.x}|${position.y}.\n\n${e}`);
                 }

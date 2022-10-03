@@ -47,6 +47,7 @@ export default class Game {
             'props/tree_swamp',
             'props/tree_snow',
             'characters/player',
+            'fonts/matchup_pro_12_black',
         ];
         ImageLoader.loadImages(images);
 

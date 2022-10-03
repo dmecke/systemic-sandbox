@@ -41,7 +41,7 @@ export default class GroundLayerRenderer extends System {
                 new Vector(sprite * config.tileSize, 0),
                 new Vector(config.tileSize, config.tileSize),
                 position,
-            ).draw(window.ctx);
+            ).draw();
         } catch (e) {
             throw new Error(`Could not render tile "${imageName}" at ${position.x}|${position.y}.\n\n${e}`);
         }

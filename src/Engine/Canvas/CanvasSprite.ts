@@ -10,8 +10,8 @@ export default class CanvasSprite {
     ) {
     }
 
-    draw(ctx: CanvasRenderingContext2D): void {
-        ctx.drawImage(
+    draw(): void {
+        window.ctx.drawImage(
             this.image,
             this.offset.x,
             this.offset.y,
