@@ -18,7 +18,14 @@ export default class Query {
 
         const allValues = [];
         this.componentStorage.get(smallestType.name).forEach((component, entity) => {
-            const foundValues = componentClasses.map(componentClass => this.componentStorage.get(componentClass.name).get(entity));
+            const foundValues = componentClasses.map(componentClass => {
+                const componentMap = this.componentStorage.get(componentClass.name);
+                if (!componentMap) {
+                    return null;
+                }
+
+                return componentMap.get(entity)
+            });
 
             if (!foundValues.some(component => !component)) {
                 allValues.push(foundValues);
@@ -37,7 +44,14 @@ export default class Query {
 
         const entities = [];
         this.componentStorage.get(smallestType.name).forEach((component, entity) => {
-            const foundValues = componentClasses.map(componentClass => this.componentStorage.get(componentClass.name).get(entity));
+            const foundValues = componentClasses.map(componentClass => {
+                const componentMap = this.componentStorage.get(componentClass.name);
+                if (!componentMap) {
+                    return null;
+                }
+
+                return componentMap.get(entity);
+            });
 
             if (!foundValues.some(component => !component)) {
                 entities.push([entity, ...foundValues]);

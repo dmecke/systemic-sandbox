@@ -1,5 +1,11 @@
 [
     {
         "name": "Interactable"
+    },
+    {
+        "name": "Flammable"
+    },
+    {
+        "name": "Health"
     }
 ]

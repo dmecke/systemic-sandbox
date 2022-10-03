@@ -12,5 +12,9 @@
 
     "controls": {
         "clickDistance": 8
+    },
+
+    "systems": {
+        "fireSpreadDistance": 40
     }
 }

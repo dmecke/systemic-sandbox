@@ -5,6 +5,7 @@ declare global {
         debugging: Debugging;
         canvas: HTMLCanvasElement;
         ctx: CanvasRenderingContext2D;
+        seed: number;
     }
 
     interface Gamepad {

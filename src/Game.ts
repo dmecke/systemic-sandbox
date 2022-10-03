@@ -1,4 +1,5 @@
 import AddIsInViewport from './System/AddIsInViewport';
+import ApplyFireDamage from './System/ApplyFireDamage';
 import BiomeComponent from './Component/BiomeComponent';
 import BiomeMap from './ProceduralGeneration/BiomeMap';
 import CameraComponent from './Component/CameraComponent';
@@ -7,6 +8,7 @@ import CameraPositionUpdater from './System/CameraPositionUpdater';
 import ECS from './Engine/ECS/ECS';
 import Entity from './Engine/ECS/Entity';
 import EntityFactory from './Engine/ECS/EntityFactory';
+import FireRenderer from './System/FireRenderer';
 import Fps from './Engine/Debug/Fps';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
@@ -15,9 +17,12 @@ import Interactable from './Component/Interactable';
 import MoveToMovementTarget from './System/MoveToMovementTarget';
 import MovementTarget from './Component/MovementTarget';
 import NumberMap from './ProceduralGeneration/NumberMap';
+import OnFire from './Component/OnFire';
 import Position from './Component/Position';
 import RemoveIsInViewport from './System/RemoveIsInViewport';
+import RemoveWithoutHealth from './System/RemoveWithoutHealth';
 import RestoreCanvasContext from './System/RestoreCanvasContext';
+import SpreadFire from './System/SpreadFire';
 import Sprite from './Component/Sprite';
 import SpriteRenderer from './System/SpriteRenderer';
 import TranslateCanvasContext from './System/TranslateCanvasContext';
@@ -51,6 +56,7 @@ export default class Game {
             'props/tree_swamp',
             'props/tree_snow',
             'characters/player',
+            'effects/fire',
             'fonts/matchup_pro_12_black',
         ];
         ImageLoader.loadImages(images);
@@ -60,6 +66,10 @@ export default class Game {
             this.ecs.addSystem(new CameraPositionUpdater());
             this.ecs.addSystem(new MoveToMovementTarget());
 
+            this.ecs.addSystem(new SpreadFire());
+            this.ecs.addSystem(new ApplyFireDamage());
+            this.ecs.addSystem(new RemoveWithoutHealth());
+
             this.ecs.addSystem(new RemoveIsInViewport());
             this.ecs.addSystem(new AddIsInViewport());
             this.ecs.addSystem(new UpdateZIndex()); // after update is in viewport
@@ -68,6 +78,7 @@ export default class Game {
 
             this.ecs.addSystem(new GroundLayerRenderer());
             this.ecs.addSystem(new SpriteRenderer());
+            this.ecs.addSystem(new FireRenderer()); // after sprite renderer
             this.ecs.addSystem(new RestoreCanvasContext());
 
             this.camera = this.entityFactory.create('camera');
@@ -95,7 +106,7 @@ export default class Game {
                     this.ecs.removeComponent(player, MovementTarget);
                     this.ecs.addComponent(player, new MovementTarget(target));
                 } else {
-                    // @todo interact
+                    entities.forEach(([entity]) => this.ecs.addComponent(entity, new OnFire()));
                 }
             });
 

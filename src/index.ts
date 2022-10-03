@@ -27,8 +27,8 @@ if (ctxHeight === null || ctxMoisture === null || ctxTree === null || ctxBiomes 
     throw new Error('Could not create context 2d.');
 }
 
-const seed = Math.random();
-const seeder = alea(seed);
+window.seed = Math.random();
+const seeder = alea(window.seed);
 
 const heightMap = generateHeightMap(createNoise2D(seeder));
 const moistureMap = generateMoistureMap(createNoise2D(seeder));

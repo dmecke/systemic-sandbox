@@ -1,6 +1,6 @@
 import Area from '../Engine/Math/Area';
 import CameraComponent from '../Component/CameraComponent';
-import IsInViewport from '../Component/IsInViewport';
+import InViewport from '../Component/InViewport';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
 import System from '../Engine/ECS/System';
@@ -20,8 +20,8 @@ export default class AddIsInViewport extends System {
         const viewport = new Area(cameraTopLeft, this.cameraSize.add(buffer.multiply(2)));
 
         for (const [entity, positionComponent] of query.allEntities(Position)) {
-            if (!query.hasComponent(entity, IsInViewport) && viewport.contains(positionComponent.position)) {
-                this.ecs.addComponent(entity, new IsInViewport());
+            if (!query.hasComponent(entity, InViewport) && viewport.contains(positionComponent.position)) {
+                this.ecs.addComponent(entity, new InViewport());
             }
         }
     }
