@@ -1,4 +1,6 @@
 import AddIsInViewport from './System/AddIsInViewport';
+import AdjustDirection from './System/AdjustDirection';
+import Animator from './System/Animator';
 import ApplyFireDamage from './System/ApplyFireDamage';
 import ApplyHungerDamage from './System/ApplyHungerDamage';
 import BiomeComponent from './Component/BiomeComponent';
@@ -22,6 +24,7 @@ import Input from './Input/Input';
 import Interactable from './Component/Interactable';
 import Map from './Map/Map';
 import MoveToMovementTarget from './System/MoveToMovementTarget';
+import MovementAnimationUpdater from './System/MovementAnimationUpdater';
 import MovementTarget from './Component/MovementTarget';
 import MovementTargetRemover from './System/MovementTargetRemover';
 import NumberMap from './ProceduralGeneration/NumberMap';
@@ -90,6 +93,10 @@ export default class Game {
             this.ecs.addSystem(new ApplyFireDamage());
             this.ecs.addSystem(new ApplyHungerDamage());
             this.ecs.addSystem(new RemoveWithoutHealth());
+
+            this.ecs.addSystem(new AdjustDirection());
+            this.ecs.addSystem(new MovementAnimationUpdater());
+            this.ecs.addSystem(new Animator());
 
             this.ecs.addSystem(new RemoveIsInViewport());
             this.ecs.addSystem(new AddIsInViewport());

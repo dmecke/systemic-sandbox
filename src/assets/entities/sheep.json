@@ -17,7 +17,23 @@
     },
     {
         "name": "CanMove",
-        "maxSpeed": 0.5
+        "maxSpeed": 0.3
+    },
+    {
+        "name": "DirectionComponent"
+    },
+    {
+        "name": "Animation",
+        "animations": {
+            "idle": {
+                "frames": 12,
+                "frameDuration": 18
+            },
+            "walk": {
+                "frames": 4,
+                "frameDuration": 6
+            }
+        }
     },
     {
         "name": "RandomMovement"

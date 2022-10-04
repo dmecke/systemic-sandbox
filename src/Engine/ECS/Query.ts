@@ -83,6 +83,14 @@ export default class Query {
         return this.componentStorage.get(componentClass.name).has(entity);
     }
 
+    getComponent<T extends Component>(entity: Entity, componentClass: ComponentClass<T>): T {
+        if (!this.componentStorage.has(componentClass.name)) {
+            throw new Error(`Entity ${entity} does not have a component ${componentClass.name}.`);
+        }
+
+        return this.componentStorage.get(componentClass.name).get(entity) as T;
+    }
+
     private getSmallestType(...componentClasses) {
         const [smallestType] = componentClasses.reduce(([smallestComponentClass, smallestComponentClassLength], currentComponentClass) => {
             const componentMap = this.componentStorage.get(currentComponentClass.name);

@@ -23,5 +23,21 @@
     },
     {
         "name": "CameraTarget"
+    },
+    {
+        "name": "DirectionComponent"
+    },
+    {
+        "name": "Animation",
+        "animations": {
+            "idle": {
+                "frames": 16,
+                "frameDuration": 18
+            },
+            "walk": {
+                "frames": 4,
+                "frameDuration": 6
+            }
+        }
     }
 ]
