@@ -1,3 +1,4 @@
+import EatsPlants from '../Component/EatsPlants';
 import Food from '../Component/Food';
 import Health from '../Component/Health';
 import Hunger from '../Component/Hunger';
@@ -6,14 +7,14 @@ import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
 import System from '../Engine/ECS/System';
 
-export default class EatGrass extends System {
+export default class EatPlant extends System {
     update(query: Query): void {
         const plants = query.allComponents(Position, Health, Plant, Food);
         if (plants.length === 0) {
             return;
         }
 
-        for (const [hunger, position] of query.allComponents(Hunger, Position)) {
+        for (const [hunger, position] of query.allComponents(Hunger, Position, EatsPlants)) {
             const eatablePlants = plants
                 .filter(([plantPosition]) => plantPosition.position.distanceTo(position.position) < 1)
             ;

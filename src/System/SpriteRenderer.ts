@@ -14,15 +14,16 @@ export default class SpriteRenderer extends System {
         const components = query.allEntities(Sprite, Position, InViewport);
         components.sort(([, spriteComponentA], [, spriteComponentB]) => spriteComponentB.zIndex - spriteComponentA.zIndex);
         for (const [entity, sprite, positionComponent] of components) {
+            const position = positionComponent.position.subtract(sprite.anchor).floor();
             try {
                 ImageLoader.instance.fromName(
                     sprite.image,
                     this.getOffset(entity, sprite),
                     sprite.size,
-                    positionComponent.position.subtract(sprite.anchor).round(),
+                    position,
                 ).draw();
             } catch (e) {
-                throw new Error(`Could not render tile "${(sprite.image)}" at ${positionComponent.position.x}|${positionComponent.position.y}.\n\n${e}`);
+                throw new Error(`Could not render tile "${(sprite.image)}" at ${position.x}|${position.y}.\n\n${e}`);
             }
         }
     }

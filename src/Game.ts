@@ -10,11 +10,11 @@ import CameraFocusUpdater from './System/CameraFocusUpdater';
 import CameraPositionUpdater from './System/CameraPositionUpdater';
 import DisplayStatistics from './System/DisplayStatistics';
 import ECS from './Engine/ECS/ECS';
-import EatGrass from './System/EatGrass';
+import EatMeat from './System/EatMeat';
+import EatPlant from './System/EatPlant';
 import Entity from './Engine/ECS/Entity';
 import EntityFactory from './Engine/ECS/EntityFactory';
 import FireRenderer from './System/FireRenderer';
-import FoodTargetAssigner from './System/FoodTargetAssigner';
 import Fps from './Engine/Debug/Fps';
 import GrassGrower from './System/GrassGrower';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
@@ -23,12 +23,14 @@ import IncreaseHunger from './System/IncreaseHunger';
 import Input from './Input/Input';
 import Interactable from './Component/Interactable';
 import Map from './Map/Map';
+import MeatFoodTargetAssigner from './System/MeatFoodTargetAssigner';
 import MoveToMovementTarget from './System/MoveToMovementTarget';
 import MovementAnimationUpdater from './System/MovementAnimationUpdater';
 import MovementTarget from './Component/MovementTarget';
 import MovementTargetRemover from './System/MovementTargetRemover';
 import NumberMap from './ProceduralGeneration/NumberMap';
 import OnFire from './Component/OnFire';
+import PlantFoodTargetAssigner from './System/PlantFoodTargetAssigner';
 import Position from './Component/Position';
 import RandomMovementTargetAssigner from './System/RandomMovementTargetAssigner';
 import RemoveIsInViewport from './System/RemoveIsInViewport';
@@ -71,6 +73,7 @@ export default class Game {
             'props/grass',
             'characters/player',
             'characters/sheep',
+            'characters/wolf',
             'effects/fire',
             'fonts/matchup_pro_12_black',
         ];
@@ -86,8 +89,10 @@ export default class Game {
             this.ecs.addSystem(new MovementTargetRemover());
 
             this.ecs.addSystem(new IncreaseHunger());
-            this.ecs.addSystem(new FoodTargetAssigner());
-            this.ecs.addSystem(new EatGrass());
+            this.ecs.addSystem(new PlantFoodTargetAssigner());
+            this.ecs.addSystem(new MeatFoodTargetAssigner());
+            this.ecs.addSystem(new EatPlant());
+            this.ecs.addSystem(new EatMeat());
             this.ecs.addSystem(new GrassGrower(this.map));
             this.ecs.addSystem(new SpreadFire());
             this.ecs.addSystem(new ApplyFireDamage());
@@ -122,6 +127,10 @@ export default class Game {
             for (let i = 1; i <= config.generation.animals.sheep; i++) {
                 const sheep = this.entityFactory.create('sheep');
                 this.ecs.addComponent(sheep, new Position(this.map.getRandomLandGridCell().multiply(config.tileSize)));
+            }
+            for (let i = 1; i <= config.generation.animals.wolves; i++) {
+                const wolf = this.entityFactory.create('wolf');
+                this.ecs.addComponent(wolf, new Position(this.map.getRandomLandGridCell().multiply(config.tileSize)));
             }
 
             Input.getInstance().onActionPressed(position => {

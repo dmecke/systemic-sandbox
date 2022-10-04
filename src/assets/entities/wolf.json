@@ -1,7 +1,7 @@
 [
     {
         "name": "Sprite",
-        "image": "characters/sheep",
+        "image": "characters/wolf",
         "anchor": {
             "x": 16,
             "y": 19
@@ -17,7 +17,7 @@
     },
     {
         "name": "CanMove",
-        "maxSpeed": 0.3
+        "maxSpeed": 0.5
     },
     {
         "name": "DirectionComponent"
@@ -27,17 +27,17 @@
         "animations": {
             "idle": {
                 "frames": 12,
-                "frameDuration": 18
+                "frameDuration": 12
             },
             "walk": {
                 "frames": 4,
-                "frameDuration": 6
+                "frameDuration": 12
             }
         }
     },
     {
         "name": "RandomMovement",
-        "range": 5
+        "range": 15
     },
     {
         "name": "Flammable"
@@ -46,15 +46,9 @@
         "name": "Hunger"
     },
     {
-        "name": "EatsPlants"
+        "name": "EatsMeat"
     },
     {
-        "name": "Food"
-    },
-    {
-        "name": "Meat"
-    },
-    {
-        "name": "Sheep"
+        "name": "Wolf"
     }
 ]
