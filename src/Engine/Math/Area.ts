@@ -8,6 +8,10 @@ export default class Area {
     ) {
     }
 
+    static around(position: Vector, range: number): Area {
+        return new Area(position.subtract(new Vector(range, range)), new Vector(range, range).multiply(2));
+    }
+
     contains(position: Vector): boolean {
         if (position.x < this.position.x) {
             return false;
@@ -66,5 +70,9 @@ export default class Area {
         }
 
         return true;
+    }
+
+    toString(): string {
+        return `${this.position.toString()} - ${this.position.add(this.size).toString()}`;
     }
 }

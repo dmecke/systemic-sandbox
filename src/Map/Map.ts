@@ -1,3 +1,4 @@
+import Area from '../Engine/Math/Area';
 import Biome from '../Biome/Biome';
 import BiomeMap from '../ProceduralGeneration/BiomeMap';
 import Rng from '../Engine/Math/Rng';
@@ -12,13 +13,21 @@ export default class Map {
     }
 
     getRandomLandGridCell(): Vector {
+        return this.getRandomLandGridCellInArea(new Area(Vector.null(), new Vector(config.generation.size.x, config.generation.size.y)));
+    }
+
+    getRandomLandGridCellInArea(area: Area): Vector {
         const rng = Rng.getInstance(window.seed.toString());
         let position: Vector;
+        let counter = 0;
         do {
             position = new Vector(
-                rng.random(config.generation.size.x),
-                rng.random(config.generation.size.y),
+                rng.randomBetween(area.left, area.right),
+                rng.randomBetween(area.top, area.bottom),
             );
+            if (counter++ >= 100) {
+                throw new Error(`Infinite loop: Trying to find a no-water tile in area ${area.toString()}.`);
+            }
         } while (this.biomeMap.get(position.x, position.y) instanceof Water)
 
         return position;

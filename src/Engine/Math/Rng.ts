@@ -23,6 +23,10 @@ export default class Rng {
         return Math.floor(this.rng() * max);
     }
 
+    randomBetween(min: number, max: number): number {
+        return Math.floor(this.rng() * (max - min)) + min;
+    }
+
     chance(amount: number): boolean {
         return amount > this.random(100);
     }
