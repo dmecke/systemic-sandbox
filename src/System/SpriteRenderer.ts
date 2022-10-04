@@ -15,7 +15,7 @@ export default class SpriteRenderer extends System {
                     sprite.image,
                     sprite.offset,
                     sprite.size,
-                    positionComponent.position.subtract(sprite.anchor),
+                    positionComponent.position.subtract(sprite.anchor).round(),
                 ).draw();
             } catch (e) {
                 throw new Error(`Could not render tile "${(sprite.image)}" at ${positionComponent.position.x}|${positionComponent.position.y}.\n\n${e}`);

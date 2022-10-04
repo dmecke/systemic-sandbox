@@ -16,6 +16,10 @@
         "health": 100
     },
     {
+        "name": "CanMove",
+        "maxSpeed": 0.5
+    },
+    {
         "name": "RandomMovement"
     },
     {

@@ -18,6 +18,10 @@
         "name": "InputComponent"
     },
     {
+        "name": "CanMove",
+        "maxSpeed": 1
+    },
+    {
         "name": "CameraTarget"
     }
 ]

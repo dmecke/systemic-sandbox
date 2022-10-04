@@ -1,5 +1,6 @@
 import CameraComponent from '../Component/CameraComponent';
 import CameraTarget from '../Component/CameraTarget';
+import CanMove from '../Component/CanMove';
 import Flammable from '../Component/Flammable';
 import Focus from '../Component/Focus';
 import Health from '../Component/Health';
@@ -16,6 +17,7 @@ import Sprite from '../Component/Sprite';
 const factories = new Map();
 factories.set('CameraComponent', CameraComponent);
 factories.set('CameraTarget', CameraTarget);
+factories.set('CanMove', CanMove);
 factories.set('Flammable', Flammable);
 factories.set('Focus', Focus);
 factories.set('Health', Health);

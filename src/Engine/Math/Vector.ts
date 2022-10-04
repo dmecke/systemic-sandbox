@@ -4,6 +4,9 @@ export default class Vector {
         private readonly _x: number,
         private readonly _y: number,
     ) {
+        if (_x === undefined || _x === null || _y === undefined || _y === null) {
+            throw new Error(`Cannot create Vector(${_x}|${_y}.`);
+        }
     }
 
     public static null() {

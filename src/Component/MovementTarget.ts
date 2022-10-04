@@ -10,6 +10,6 @@ export default class MovementTarget extends Component {
     }
 
     static fromData(data: { x: number, y: number }): MovementTarget {
-        return new MovementTarget(new Vector(data.x ?? 0, data.y ?? 0));
+        return new MovementTarget(new Vector(data.x, data.y));
     }
 }
