@@ -20,12 +20,11 @@ export default class SpreadFire extends System {
 
         for (const [onFirePositionComponent] of onFire) {
             flammable
-                .filter(([, flammablePositionComponent]) => onFirePositionComponent.position.distanceTo(flammablePositionComponent.position) <= config.systems.fireSpreadDistance)
+                .filter(() => Rng.getInstance(window.seed.toString()).chance(50))
                 .filter(([entity]) => !this.ecs.query.hasComponent(entity, OnFire))
+                .filter(([, flammablePositionComponent]) => onFirePositionComponent.position.distanceTo(flammablePositionComponent.position) <= config.systems.fireSpreadDistance)
                 .forEach(([entity, , flammableComponent]) => {
-                    if (Rng.getInstance(window.seed.toString()).chance(50)) {
-                        flammableComponent.resistance--;
-                    }
+                    flammableComponent.resistance--;
                     if (flammableComponent.resistance <= 0) {
                         this.ecs.addComponent(entity, new OnFire());
                     }
