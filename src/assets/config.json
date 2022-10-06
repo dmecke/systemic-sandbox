@@ -10,7 +10,7 @@
         "heightLevels": 5,
         "animals": {
             "sheep": 100,
-            "wolves": 20
+            "wolves": 10
         }
     },
 

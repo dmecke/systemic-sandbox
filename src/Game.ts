@@ -20,6 +20,7 @@ import GrassGrower from './System/GrassGrower';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
 import IncreaseHunger from './System/IncreaseHunger';
+import IncreaseReproductionUrge from './System/IncreaseReproductionUrge';
 import Input from './Input/Input';
 import Interactable from './Component/Interactable';
 import Map from './Map/Map';
@@ -36,6 +37,9 @@ import RandomMovementTargetAssigner from './System/RandomMovementTargetAssigner'
 import RemoveIsInViewport from './System/RemoveIsInViewport';
 import RemoveWithoutHealth from './System/RemoveWithoutHealth';
 import RestoreCanvasContext from './System/RestoreCanvasContext';
+import SheepFactory from './Entity/Factory/SheepFactory';
+import SheepReproduction from './System/SheepReproduction';
+import SheepReproductionTargetAssigner from './System/SheepReproductionTargetAssigner';
 import SpreadFire from './System/SpreadFire';
 import Sprite from './Component/Sprite';
 import SpriteRenderer from './System/SpriteRenderer';
@@ -43,6 +47,9 @@ import TranslateCanvasContext from './System/TranslateCanvasContext';
 import TreeMap from './ProceduralGeneration/TreeMap';
 import UpdateZIndex from './System/UpdateZIndex';
 import Vector from './Engine/Math/Vector';
+import WolfFactory from './Entity/Factory/WolfFactory';
+import WolfReproduction from './System/WolfReproduction';
+import WolfReproductionTargetAssigner from './System/WolfReproductionTargetAssigner';
 import config from './assets/config.json';
 import entityFactoryMap from './Entity/entityFactoryMap';
 import entityMap from './Entity/entityMap';
@@ -51,6 +58,8 @@ export default class Game {
     private fps = new Fps();
     private readonly ecs = new ECS();
     private readonly entityFactory = new EntityFactory(this.ecs, entityMap, entityFactoryMap);
+    private readonly sheepFactory = new SheepFactory(this.ecs, this.entityFactory);
+    private readonly wolfFactory = new WolfFactory(this.ecs, this.entityFactory);
     private camera: Entity;
     private readonly map: Map;
 
@@ -89,8 +98,13 @@ export default class Game {
             this.ecs.addSystem(new MovementTargetRemover());
 
             this.ecs.addSystem(new IncreaseHunger());
+            this.ecs.addSystem(new IncreaseReproductionUrge());
             this.ecs.addSystem(new PlantFoodTargetAssigner());
             this.ecs.addSystem(new MeatFoodTargetAssigner());
+            this.ecs.addSystem(new SheepReproductionTargetAssigner());
+            this.ecs.addSystem(new SheepReproduction(this.sheepFactory));
+            this.ecs.addSystem(new WolfReproductionTargetAssigner());
+            this.ecs.addSystem(new WolfReproduction(this.wolfFactory));
             this.ecs.addSystem(new EatPlant());
             this.ecs.addSystem(new EatMeat());
             this.ecs.addSystem(new GrassGrower(this.map));
@@ -124,14 +138,8 @@ export default class Game {
             this.ecs.addComponent(ground, this.createGroundLayerComponent());
 
             this.treeMap.all().forEach(position => this.createTreeAt(position));
-            for (let i = 1; i <= config.generation.animals.sheep; i++) {
-                const sheep = this.entityFactory.create('sheep');
-                this.ecs.addComponent(sheep, new Position(this.map.getRandomLandGridCell().multiply(config.tileSize)));
-            }
-            for (let i = 1; i <= config.generation.animals.wolves; i++) {
-                const wolf = this.entityFactory.create('wolf');
-                this.ecs.addComponent(wolf, new Position(this.map.getRandomLandGridCell().multiply(config.tileSize)));
-            }
+            this.createSheep();
+            this.createWolves();
 
             Input.getInstance().onActionPressed(position => {
                 const factor = window.canvas.clientWidth / window.canvas.width;
@@ -198,5 +206,17 @@ export default class Game {
             1,
         );
         this.ecs.addComponent(tree, sprite);
+    }
+
+    private createSheep(): void {
+        for (let i = 1; i <= config.generation.animals.sheep; i++) {
+            this.sheepFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize));
+        }
+    }
+
+    private createWolves(): void {
+        for (let i = 1; i <= config.generation.animals.wolves; i++) {
+            this.wolfFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize));
+        }
     }
 }

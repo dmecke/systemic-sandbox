@@ -46,6 +46,9 @@
         "name": "Hunger"
     },
     {
+        "name": "ReproductionUrge"
+    },
+    {
         "name": "EatsMeat"
     },
     {
