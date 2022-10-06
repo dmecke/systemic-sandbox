@@ -1,14 +1,6 @@
-[
-    {
-        "name": "Interactable"
-    },
-    {
-        "name": "Flammable"
-    },
-    {
-        "name": "Health"
-    },
-    {
-        "name": "Plant"
-    }
-]
+{
+    "Interactable": {},
+    "Flammable": {},
+    "Health": {},
+    "Plant": {}
+}

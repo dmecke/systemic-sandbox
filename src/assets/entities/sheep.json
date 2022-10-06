@@ -1,6 +1,5 @@
-[
-    {
-        "name": "Sprite",
+{
+    "Sprite": {
         "image": "characters/sheep",
         "anchor": {
             "x": 16,
@@ -11,19 +10,14 @@
             "y": 32
         }
     },
-    {
-        "name": "Health",
+    "Health": {
         "health": 100
     },
-    {
-        "name": "CanMove",
+    "CanMove": {
         "maxSpeed": 0.3
     },
-    {
-        "name": "DirectionComponent"
-    },
-    {
-        "name": "Animation",
+    "DirectionComponent": {},
+    "Animation": {
         "animations": {
             "idle": {
                 "frames": 12,
@@ -35,29 +29,14 @@
             }
         }
     },
-    {
-        "name": "RandomMovement",
+    "RandomMovement": {
         "range": 5
     },
-    {
-        "name": "Flammable"
-    },
-    {
-        "name": "Hunger"
-    },
-    {
-        "name": "ReproductionUrge"
-    },
-    {
-        "name": "EatsPlants"
-    },
-    {
-        "name": "Food"
-    },
-    {
-        "name": "Meat"
-    },
-    {
-        "name": "Sheep"
-    }
-]
+    "Flammable": {},
+    "Hunger": {},
+    "ReproductionUrge": {},
+    "EatsPlants": {},
+    "Food": {},
+    "Meat": {},
+    "Sheep": {}
+}

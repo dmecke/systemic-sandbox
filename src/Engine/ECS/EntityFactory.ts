@@ -6,7 +6,7 @@ export default class EntityFactory {
 
     constructor(
         private readonly ecs: ECS,
-        private readonly entities: Map<string, { name: string }[]>,
+        private readonly entities: Map<string, Record<string, unknown>>,
         private readonly factories: Map<string, { fromData(data: unknown): Component }>,
     ) {
     }
@@ -30,16 +30,16 @@ export default class EntityFactory {
             throw new Error(`Could not find data for entity "${name}".`);
         }
 
-        return entityComponents.map(data => {
-            const factory = this.factories.get(data.name);
+        return Object.keys(entityComponents).map(key => {
+            const factory = this.factories.get(key);
             if (!factory) {
-                throw new Error(`Could not find factory for "${data.name}".`);
+                throw new Error(`Could not find factory for "${key}".`);
             }
             if (!factory.fromData) {
-                throw new Error(`"${data.name}" does not have a fromData method.`);
+                throw new Error(`"${key}" does not have a fromData method.`);
             }
 
-            return factory.fromData(data);
+            return factory.fromData(entityComponents[key]);
         });
     }
 }

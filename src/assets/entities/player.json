@@ -1,9 +1,6 @@
-[
-    {
-        "name": "Player"
-    },
-    {
-        "name": "Sprite",
+{
+    "Player": {},
+    "Sprite": {
         "image": "characters/player",
         "anchor": {
             "x": 16,
@@ -14,21 +11,13 @@
             "y": 32
         }
     },
-    {
-        "name": "InputComponent"
-    },
-    {
-        "name": "CanMove",
+    "InputComponent": {},
+    "CanMove": {
         "maxSpeed": 1
     },
-    {
-        "name": "CameraTarget"
-    },
-    {
-        "name": "DirectionComponent"
-    },
-    {
-        "name": "Animation",
+    "CameraTarget": {},
+    "DirectionComponent": {},
+    "Animation": {
         "animations": {
             "idle": {
                 "frames": 16,
@@ -40,4 +29,4 @@
             }
         }
     }
-]
+}

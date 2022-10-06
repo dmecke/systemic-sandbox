@@ -4,7 +4,7 @@ import sheep from '../assets/entities/sheep.json';
 import tree from '../assets/entities/tree.json';
 import wolf from '../assets/entities/wolf.json';
 
-const entityMap = new Map<string, { name: string }[]>();
+const entityMap = new Map<string, Record<string, unknown>>();
 entityMap.set('camera', camera);
 entityMap.set('player', player);
 entityMap.set('sheep', sheep);

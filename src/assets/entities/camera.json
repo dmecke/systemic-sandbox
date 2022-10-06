@@ -1,11 +1,5 @@
-[
-    {
-        "name": "Position"
-    },
-    {
-        "name": "CameraComponent"
-    },
-    {
-        "name": "Focus"
-    }
-]
+{
+    "Position": {},
+    "CameraComponent": {},
+    "Focus": {}
+}

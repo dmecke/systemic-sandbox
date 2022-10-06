@@ -1,6 +1,5 @@
-[
-    {
-        "name": "Sprite",
+{
+    "Sprite": {
         "image": "characters/wolf",
         "anchor": {
             "x": 16,
@@ -11,19 +10,14 @@
             "y": 32
         }
     },
-    {
-        "name": "Health",
+    "Health": {
         "health": 100
     },
-    {
-        "name": "CanMove",
+    "CanMove": {
         "maxSpeed": 0.5
     },
-    {
-        "name": "DirectionComponent"
-    },
-    {
-        "name": "Animation",
+    "DirectionComponent": {},
+    "Animation": {
         "animations": {
             "idle": {
                 "frames": 12,
@@ -35,23 +29,12 @@
             }
         }
     },
-    {
-        "name": "RandomMovement",
+    "RandomMovement": {
         "range": 15
     },
-    {
-        "name": "Flammable"
-    },
-    {
-        "name": "Hunger"
-    },
-    {
-        "name": "ReproductionUrge"
-    },
-    {
-        "name": "EatsMeat"
-    },
-    {
-        "name": "Wolf"
-    }
-]
+    "Flammable": {},
+    "Hunger": {},
+    "ReproductionUrge": {},
+    "EatsMeat": {},
+    "Wolf": {}
+}
