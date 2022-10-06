@@ -1,5 +1,4 @@
 import BiomeMap from '../../ProceduralGeneration/BiomeMap';
-import ECS from '../../Engine/ECS/ECS';
 import Entity from '../../Engine/ECS/Entity';
 import EntityFactory from '../../Engine/ECS/EntityFactory';
 import ImageLoader from '../../Engine/Assets/ImageLoader';
@@ -10,7 +9,6 @@ import config from '../../assets/config.json';
 
 export default class TreeFactory {
     constructor(
-        private readonly ecs: ECS,
         private readonly entityFactory: EntityFactory,
         private readonly biomeMap: BiomeMap,
     ) {

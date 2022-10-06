@@ -5,7 +5,6 @@ import AnimalReproductionTargetAssigner from './System/AnimalReproductionTargetA
 import Animator from './System/Animator';
 import ApplyFireDamage from './System/ApplyFireDamage';
 import ApplyHungerDamage from './System/ApplyHungerDamage';
-import BiomeComponent from './Component/BiomeComponent';
 import BiomeMap from './ProceduralGeneration/BiomeMap';
 import CameraComponent from './Component/CameraComponent';
 import CameraFocusUpdater from './System/CameraFocusUpdater';
@@ -19,6 +18,7 @@ import EntityFactory from './Engine/ECS/EntityFactory';
 import FireRenderer from './System/FireRenderer';
 import Fps from './Engine/Debug/Fps';
 import GrassGrower from './System/GrassGrower';
+import GroundFactory from './Entity/Factory/GroundFactory';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
 import ImageLoader from './Engine/Assets/ImageLoader';
 import IncreaseHunger from './System/IncreaseHunger';
@@ -31,7 +31,6 @@ import MoveToMovementTarget from './System/MoveToMovementTarget';
 import MovementAnimationUpdater from './System/MovementAnimationUpdater';
 import MovementTarget from './Component/MovementTarget';
 import MovementTargetRemover from './System/MovementTargetRemover';
-import NumberMap from './ProceduralGeneration/NumberMap';
 import OnFire from './Component/OnFire';
 import PlantFoodTargetAssigner from './System/PlantFoodTargetAssigner';
 import Position from './Component/Position';
@@ -57,9 +56,10 @@ export default class Game {
     private fps = new Fps();
     private readonly ecs = new ECS();
     private readonly entityFactory = new EntityFactory(this.ecs, entityMap, entityFactoryMap);
-    private readonly treeFactory = new TreeFactory(this.ecs, this.entityFactory, this.biomeMap);
-    private readonly sheepFactory = new SheepFactory(this.ecs, this.entityFactory);
-    private readonly wolfFactory = new WolfFactory(this.ecs, this.entityFactory);
+    private readonly treeFactory = new TreeFactory(this.entityFactory, this.biomeMap);
+    private readonly sheepFactory = new SheepFactory(this.entityFactory);
+    private readonly wolfFactory = new WolfFactory(this.entityFactory);
+    private readonly groundFactory = new GroundFactory(this.entityFactory, this.biomeMap);
     private camera: Entity;
     private player: Entity;
     private readonly map: Map;
@@ -144,27 +144,11 @@ export default class Game {
             new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).divide(2)),
         ]);
 
-        this.entityFactory.create('ground', [
-            this.createGroundLayerComponent(),
-        ]);
+        this.groundFactory.create();
 
         this.treeMap.all().forEach(position => this.treeFactory.create(position));
         Array.from({ length: config.generation.animals.sheep }, () => this.sheepFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
         Array.from({ length: config.generation.animals.wolves }, () => this.wolfFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
-    }
-
-    private createGroundLayerComponent(): BiomeComponent {
-        const size = config.generation.size;
-        const spriteOffsets = new NumberMap();
-        for (let y = 0; y < size.y; y++) {
-            for (let x = 0; x < size.x; x++) {
-                const biome = this.biomeMap.get(x, y);
-                const img = ImageLoader.instance.getImage(`tiles/${biome.image}`);
-                spriteOffsets.set(x, y, Math.floor(Math.random() * (img.width as number) / config.tileSize));
-            }
-        }
-
-        return new BiomeComponent(this.biomeMap, spriteOffsets);
     }
 
     private handleClick(position: Vector): void {

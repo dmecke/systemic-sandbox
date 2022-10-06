@@ -1,12 +1,12 @@
 import BiomeMap from '../ProceduralGeneration/BiomeMap';
 import Component from '../Engine/ECS/Component';
-import NumberMap from '../ProceduralGeneration/NumberMap';
+import VectorMap from '../ProceduralGeneration/VectorMap';
 
 export default class BiomeComponent extends Component {
 
     constructor(
         readonly biomeMap: BiomeMap,
-        readonly spriteOffsets: NumberMap,
+        readonly spriteOffsets: VectorMap,
     ) {
         super();
     }
