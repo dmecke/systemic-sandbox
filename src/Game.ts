@@ -51,6 +51,7 @@ import WolfFactory from './Entity/Factory/WolfFactory';
 import config from './assets/config.json';
 import entityFactoryMap from './Entity/entityFactoryMap';
 import entityMap from './Entity/entityMap';
+import images from './assets/images.json';
 
 export default class Game {
     private fps = new Fps();
@@ -60,6 +61,7 @@ export default class Game {
     private readonly sheepFactory = new SheepFactory(this.ecs, this.entityFactory);
     private readonly wolfFactory = new WolfFactory(this.ecs, this.entityFactory);
     private camera: Entity;
+    private player: Entity;
     private readonly map: Map;
 
     constructor(
@@ -68,96 +70,13 @@ export default class Game {
     ) {
         this.map = new Map(biomeMap);
 
-        const images = [
-            'tiles/desert',
-            'tiles/grassland',
-            'tiles/jungle',
-            'tiles/swamp',
-            'tiles/water',
-            'tiles/snow',
-            'props/tree_desert',
-            'props/tree_grassland',
-            'props/tree_jungle',
-            'props/tree_swamp',
-            'props/tree_snow',
-            'props/grass',
-            'characters/player',
-            'characters/sheep',
-            'characters/wolf',
-            'effects/fire',
-            'fonts/matchup_pro_12_black',
-        ];
         ImageLoader
             .loadImages(images)
             .then(() => {
-                this.ecs.addSystem(new CameraFocusUpdater());
-                this.ecs.addSystem(new CameraPositionUpdater());
-                this.ecs.addSystem(new RandomMovementTargetAssigner(this.map));
-                this.ecs.addSystem(new MoveToMovementTarget());
-                this.ecs.addSystem(new MovementTargetRemover());
+                this.createSystems();
+                this.createEntities();
 
-                this.ecs.addSystem(new IncreaseHunger());
-                this.ecs.addSystem(new IncreaseReproductionUrge());
-                this.ecs.addSystem(new PlantFoodTargetAssigner());
-                this.ecs.addSystem(new MeatFoodTargetAssigner());
-                this.ecs.addSystem(new AnimalReproductionTargetAssigner('Wolf'));
-                this.ecs.addSystem(new AnimalReproductionTargetAssigner('Sheep'));
-                this.ecs.addSystem(new AnimalReproduction('Wolf', this.wolfFactory));
-                this.ecs.addSystem(new AnimalReproduction('Sheep', this.sheepFactory));
-                this.ecs.addSystem(new EatPlant());
-                this.ecs.addSystem(new EatMeat());
-                this.ecs.addSystem(new GrassGrower(this.map));
-                this.ecs.addSystem(new SpreadFire());
-                this.ecs.addSystem(new ApplyFireDamage());
-                this.ecs.addSystem(new ApplyHungerDamage());
-                this.ecs.addSystem(new RemoveWithoutHealth());
-
-                this.ecs.addSystem(new AdjustDirection());
-                this.ecs.addSystem(new MovementAnimationUpdater());
-                this.ecs.addSystem(new Animator());
-
-                this.ecs.addSystem(new RemoveIsInViewport());
-                this.ecs.addSystem(new AddIsInViewport());
-                this.ecs.addSystem(new UpdateZIndex()); // after update is in viewport
-
-                this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings
-
-                this.ecs.addSystem(new GroundLayerRenderer());
-                this.ecs.addSystem(new SpriteRenderer());
-                this.ecs.addSystem(new FireRenderer()); // after sprite renderer
-                this.ecs.addSystem(new RestoreCanvasContext());
-                this.ecs.addSystem(new DisplayStatistics());
-
-                this.camera = this.entityFactory.create('camera');
-
-                const player = this.entityFactory.create('player');
-                this.ecs.addComponent(player, new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).divide(2)));
-
-                const ground = this.ecs.addEntity();
-                this.ecs.addComponent(ground, this.createGroundLayerComponent());
-
-                this.treeMap.all().forEach(position => this.treeFactory.create(position));
-                Array.from({ length: config.generation.animals.sheep }, () => this.sheepFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
-                Array.from({ length: config.generation.animals.wolves }, () => this.wolfFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
-
-                Input.getInstance().onActionPressed(position => {
-                    const factor = window.canvas.clientWidth / window.canvas.width;
-                    const [positionComponent] = this.ecs.query.oneComponent(Position, CameraComponent);
-                    const target = positionComponent.position.add(position.divide(factor)).round();
-
-                    const entities = this
-                        .ecs
-                        .query
-                        .allEntities(Position, Interactable)
-                        .filter(([, positionComponent]) => positionComponent.position.distanceTo(target) < config.controls.clickDistance)
-                    ;
-                    if (entities.length === 0) {
-                        this.ecs.removeComponent(player, MovementTarget);
-                        this.ecs.addComponent(player, new MovementTarget(target));
-                    } else {
-                        entities.forEach(([entity]) => this.ecs.addComponent(entity, new OnFire()));
-                    }
-                });
+                Input.getInstance().onActionPressed(position => this.handleClick(position));
 
                 requestAnimationFrame(() => this.update());
             })
@@ -178,6 +97,62 @@ export default class Game {
         requestAnimationFrame(() => this.update());
     }
 
+    private createSystems(): void {
+        this.ecs.addSystem(new CameraFocusUpdater());
+        this.ecs.addSystem(new CameraPositionUpdater());
+        this.ecs.addSystem(new RandomMovementTargetAssigner(this.map));
+        this.ecs.addSystem(new MoveToMovementTarget());
+        this.ecs.addSystem(new MovementTargetRemover());
+
+        this.ecs.addSystem(new IncreaseHunger());
+        this.ecs.addSystem(new IncreaseReproductionUrge());
+        this.ecs.addSystem(new PlantFoodTargetAssigner());
+        this.ecs.addSystem(new MeatFoodTargetAssigner());
+        this.ecs.addSystem(new AnimalReproductionTargetAssigner('Wolf'));
+        this.ecs.addSystem(new AnimalReproductionTargetAssigner('Sheep'));
+        this.ecs.addSystem(new AnimalReproduction('Wolf', this.wolfFactory));
+        this.ecs.addSystem(new AnimalReproduction('Sheep', this.sheepFactory));
+        this.ecs.addSystem(new EatPlant());
+        this.ecs.addSystem(new EatMeat());
+        this.ecs.addSystem(new GrassGrower(this.map));
+        this.ecs.addSystem(new SpreadFire());
+        this.ecs.addSystem(new ApplyFireDamage());
+        this.ecs.addSystem(new ApplyHungerDamage());
+        this.ecs.addSystem(new RemoveWithoutHealth());
+
+        this.ecs.addSystem(new AdjustDirection());
+        this.ecs.addSystem(new MovementAnimationUpdater());
+        this.ecs.addSystem(new Animator());
+
+        this.ecs.addSystem(new RemoveIsInViewport());
+        this.ecs.addSystem(new AddIsInViewport());
+        this.ecs.addSystem(new UpdateZIndex()); // after update is in viewport
+
+        this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings
+
+        this.ecs.addSystem(new GroundLayerRenderer());
+        this.ecs.addSystem(new SpriteRenderer());
+        this.ecs.addSystem(new FireRenderer()); // after sprite renderer
+        this.ecs.addSystem(new RestoreCanvasContext());
+        this.ecs.addSystem(new DisplayStatistics());
+    }
+
+    private createEntities(): void {
+        this.camera = this.entityFactory.create('camera');
+
+        this.player = this.entityFactory.create('player', [
+            new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).divide(2)),
+        ]);
+
+        this.entityFactory.create('ground', [
+            this.createGroundLayerComponent(),
+        ]);
+
+        this.treeMap.all().forEach(position => this.treeFactory.create(position));
+        Array.from({ length: config.generation.animals.sheep }, () => this.sheepFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
+        Array.from({ length: config.generation.animals.wolves }, () => this.wolfFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
+    }
+
     private createGroundLayerComponent(): BiomeComponent {
         const size = config.generation.size;
         const spriteOffsets = new NumberMap();
@@ -190,5 +165,24 @@ export default class Game {
         }
 
         return new BiomeComponent(this.biomeMap, spriteOffsets);
+    }
+
+    private handleClick(position: Vector): void {
+        const factor = window.canvas.clientWidth / window.canvas.width;
+        const [positionComponent] = this.ecs.query.oneComponent(Position, CameraComponent);
+        const target = positionComponent.position.add(position.divide(factor)).round();
+
+        const entities = this
+            .ecs
+            .query
+            .allEntities(Position, Interactable)
+            .filter(([, positionComponent]) => positionComponent.position.distanceTo(target) < config.controls.clickDistance)
+        ;
+        if (entities.length === 0) {
+            this.ecs.removeComponent(this.player, MovementTarget);
+            this.ecs.addComponent(this.player, new MovementTarget(target));
+        } else {
+            entities.forEach(([entity]) => this.ecs.addComponent(entity, new OnFire()));
+        }
     }
 }

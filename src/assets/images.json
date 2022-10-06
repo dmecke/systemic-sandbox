@@ -1,0 +1,19 @@
+[
+    "tiles/desert",
+    "tiles/grassland",
+    "tiles/jungle",
+    "tiles/swamp",
+    "tiles/water",
+    "tiles/snow",
+    "props/tree_desert",
+    "props/tree_grassland",
+    "props/tree_jungle",
+    "props/tree_swamp",
+    "props/tree_snow",
+    "props/grass",
+    "characters/player",
+    "characters/sheep",
+    "characters/wolf",
+    "effects/fire",
+    "fonts/matchup_pro_12_black"
+]
