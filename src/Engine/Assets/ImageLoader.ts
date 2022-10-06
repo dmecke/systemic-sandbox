@@ -11,11 +11,21 @@ export default class ImageLoader {
         // noop
     }
 
-    static loadImages(images: string[]): void {
-        for (let i = 0; i < images.length; i++) {
-            ImageLoader.instance.images[images[i]] = new Image();
-            import('../../assets/images/' + images[i] + '.png').then(image => ImageLoader.instance.images[images[i]].src = image.default);
-        }
+    static async loadImages(images: string[]): Promise<void> {
+        return new Promise(resolve => {
+            let loaded = 0;
+            for (let i = 0; i < images.length; i++) {
+                ImageLoader.instance.images[images[i]] = new Image();
+                import('../../assets/images/' + images[i] + '.png')
+                    .then(image => {
+                        ImageLoader.instance.images[images[i]].src = image.default;
+                        loaded++;
+                        if (loaded === images.length) {
+                            resolve();
+                        }
+                    });
+            }
+        });
     }
 
     fromName(image: string, offset: Vector, size: Vector, position: Vector): CanvasSprite {

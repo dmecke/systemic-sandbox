@@ -65,6 +65,8 @@ export default class Game {
         private readonly biomeMap: BiomeMap,
         private readonly treeMap: TreeMap,
     ) {
+        this.map = new Map(biomeMap);
+
         const images = [
             'tiles/desert',
             'tiles/grassland',
@@ -84,82 +86,81 @@ export default class Game {
             'effects/fire',
             'fonts/matchup_pro_12_black',
         ];
-        ImageLoader.loadImages(images);
+        ImageLoader
+            .loadImages(images)
+            .then(() => {
+                this.ecs.addSystem(new CameraFocusUpdater());
+                this.ecs.addSystem(new CameraPositionUpdater());
+                this.ecs.addSystem(new RandomMovementTargetAssigner(this.map));
+                this.ecs.addSystem(new MoveToMovementTarget());
+                this.ecs.addSystem(new MovementTargetRemover());
 
-        this.map = new Map(biomeMap);
+                this.ecs.addSystem(new IncreaseHunger());
+                this.ecs.addSystem(new IncreaseReproductionUrge());
+                this.ecs.addSystem(new PlantFoodTargetAssigner());
+                this.ecs.addSystem(new MeatFoodTargetAssigner());
+                this.ecs.addSystem(new AnimalReproductionTargetAssigner('Wolf'));
+                this.ecs.addSystem(new AnimalReproductionTargetAssigner('Sheep'));
+                this.ecs.addSystem(new AnimalReproduction('Wolf', this.wolfFactory));
+                this.ecs.addSystem(new AnimalReproduction('Sheep', this.sheepFactory));
+                this.ecs.addSystem(new EatPlant());
+                this.ecs.addSystem(new EatMeat());
+                this.ecs.addSystem(new GrassGrower(this.map));
+                this.ecs.addSystem(new SpreadFire());
+                this.ecs.addSystem(new ApplyFireDamage());
+                this.ecs.addSystem(new ApplyHungerDamage());
+                this.ecs.addSystem(new RemoveWithoutHealth());
 
-        setTimeout(() => { // workaround: wait until image loading is done
-            this.ecs.addSystem(new CameraFocusUpdater());
-            this.ecs.addSystem(new CameraPositionUpdater());
-            this.ecs.addSystem(new RandomMovementTargetAssigner(this.map));
-            this.ecs.addSystem(new MoveToMovementTarget());
-            this.ecs.addSystem(new MovementTargetRemover());
+                this.ecs.addSystem(new AdjustDirection());
+                this.ecs.addSystem(new MovementAnimationUpdater());
+                this.ecs.addSystem(new Animator());
 
-            this.ecs.addSystem(new IncreaseHunger());
-            this.ecs.addSystem(new IncreaseReproductionUrge());
-            this.ecs.addSystem(new PlantFoodTargetAssigner());
-            this.ecs.addSystem(new MeatFoodTargetAssigner());
-            this.ecs.addSystem(new AnimalReproductionTargetAssigner('Wolf'));
-            this.ecs.addSystem(new AnimalReproductionTargetAssigner('Sheep'));
-            this.ecs.addSystem(new AnimalReproduction('Wolf', this.wolfFactory));
-            this.ecs.addSystem(new AnimalReproduction('Sheep', this.sheepFactory));
-            this.ecs.addSystem(new EatPlant());
-            this.ecs.addSystem(new EatMeat());
-            this.ecs.addSystem(new GrassGrower(this.map));
-            this.ecs.addSystem(new SpreadFire());
-            this.ecs.addSystem(new ApplyFireDamage());
-            this.ecs.addSystem(new ApplyHungerDamage());
-            this.ecs.addSystem(new RemoveWithoutHealth());
+                this.ecs.addSystem(new RemoveIsInViewport());
+                this.ecs.addSystem(new AddIsInViewport());
+                this.ecs.addSystem(new UpdateZIndex()); // after update is in viewport
 
-            this.ecs.addSystem(new AdjustDirection());
-            this.ecs.addSystem(new MovementAnimationUpdater());
-            this.ecs.addSystem(new Animator());
+                this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings
 
-            this.ecs.addSystem(new RemoveIsInViewport());
-            this.ecs.addSystem(new AddIsInViewport());
-            this.ecs.addSystem(new UpdateZIndex()); // after update is in viewport
+                this.ecs.addSystem(new GroundLayerRenderer());
+                this.ecs.addSystem(new SpriteRenderer());
+                this.ecs.addSystem(new FireRenderer()); // after sprite renderer
+                this.ecs.addSystem(new RestoreCanvasContext());
+                this.ecs.addSystem(new DisplayStatistics());
 
-            this.ecs.addSystem(new TranslateCanvasContext()); // after camera updates; before renderings
+                this.camera = this.entityFactory.create('camera');
 
-            this.ecs.addSystem(new GroundLayerRenderer());
-            this.ecs.addSystem(new SpriteRenderer());
-            this.ecs.addSystem(new FireRenderer()); // after sprite renderer
-            this.ecs.addSystem(new RestoreCanvasContext());
-            this.ecs.addSystem(new DisplayStatistics());
+                const player = this.entityFactory.create('player');
+                this.ecs.addComponent(player, new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).divide(2)));
 
-            this.camera = this.entityFactory.create('camera');
+                const ground = this.ecs.addEntity();
+                this.ecs.addComponent(ground, this.createGroundLayerComponent());
 
-            const player = this.entityFactory.create('player');
-            this.ecs.addComponent(player, new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).divide(2)));
+                this.treeMap.all().forEach(position => this.createTreeAt(position));
+                this.createSheep();
+                this.createWolves();
 
-            const ground = this.ecs.addEntity();
-            this.ecs.addComponent(ground, this.createGroundLayerComponent());
+                Input.getInstance().onActionPressed(position => {
+                    const factor = window.canvas.clientWidth / window.canvas.width;
+                    const [positionComponent] = this.ecs.query.oneComponent(Position, CameraComponent);
+                    const target = positionComponent.position.add(position.divide(factor)).round();
 
-            this.treeMap.all().forEach(position => this.createTreeAt(position));
-            this.createSheep();
-            this.createWolves();
+                    const entities = this
+                        .ecs
+                        .query
+                        .allEntities(Position, Interactable)
+                        .filter(([, positionComponent]) => positionComponent.position.distanceTo(target) < config.controls.clickDistance)
+                    ;
+                    if (entities.length === 0) {
+                        this.ecs.removeComponent(player, MovementTarget);
+                        this.ecs.addComponent(player, new MovementTarget(target));
+                    } else {
+                        entities.forEach(([entity]) => this.ecs.addComponent(entity, new OnFire()));
+                    }
+                });
 
-            Input.getInstance().onActionPressed(position => {
-                const factor = window.canvas.clientWidth / window.canvas.width;
-                const [positionComponent] = this.ecs.query.oneComponent(Position, CameraComponent);
-                const target = positionComponent.position.add(position.divide(factor)).round();
-
-                const entities = this
-                    .ecs
-                    .query
-                    .allEntities(Position, Interactable)
-                    .filter(([, positionComponent]) => positionComponent.position.distanceTo(target) < config.controls.clickDistance)
-                ;
-                if (entities.length === 0) {
-                    this.ecs.removeComponent(player, MovementTarget);
-                    this.ecs.addComponent(player, new MovementTarget(target));
-                } else {
-                    entities.forEach(([entity]) => this.ecs.addComponent(entity, new OnFire()));
-                }
-            });
-
-            requestAnimationFrame(() => this.update());
-        }, 500);
+                requestAnimationFrame(() => this.update());
+            })
+        ;
     }
 
     update(): void {
