@@ -13,10 +13,9 @@ export default class WolfFactory {
     }
 
     create(position: Vector): Entity {
-        const wolf = this.entityFactory.create('wolf');
-        this.ecs.addComponent(wolf, new Position(position));
-        this.ecs.addComponent(wolf, Gender.random());
-
-        return wolf;
+        return this.entityFactory.create('wolf', [
+            new Position(position),
+            Gender.random(),
+        ]);
     }
 }

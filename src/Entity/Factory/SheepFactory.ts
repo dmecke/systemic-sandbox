@@ -13,10 +13,9 @@ export default class SheepFactory {
     }
 
     create(position: Vector): Entity {
-        const sheep = this.entityFactory.create('sheep');
-        this.ecs.addComponent(sheep, new Position(position));
-        this.ecs.addComponent(sheep, Gender.random());
-
-        return sheep;
+        return this.entityFactory.create('sheep', [
+            new Position(position),
+            Gender.random(),
+        ]);
     }
 }

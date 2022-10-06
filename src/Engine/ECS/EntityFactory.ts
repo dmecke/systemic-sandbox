@@ -11,15 +11,15 @@ export default class EntityFactory {
     ) {
     }
 
-    create(name: string): Entity {
+    create(name: string, additionalComponents: Component[] = []): Entity {
         const entity = this.ecs.addEntity();
 
         this
             .find(name)
-            .forEach(component => {
-                this.ecs.addComponent(entity, component);
-            })
+            .forEach(component => this.ecs.addComponent(entity, component))
         ;
+
+        additionalComponents.forEach(component => this.ecs.addComponent(entity, component))
 
         return entity;
     }

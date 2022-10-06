@@ -41,9 +41,9 @@ import RemoveWithoutHealth from './System/RemoveWithoutHealth';
 import RestoreCanvasContext from './System/RestoreCanvasContext';
 import SheepFactory from './Entity/Factory/SheepFactory';
 import SpreadFire from './System/SpreadFire';
-import Sprite from './Component/Sprite';
 import SpriteRenderer from './System/SpriteRenderer';
 import TranslateCanvasContext from './System/TranslateCanvasContext';
+import TreeFactory from './Entity/Factory/TreeFactory';
 import TreeMap from './ProceduralGeneration/TreeMap';
 import UpdateZIndex from './System/UpdateZIndex';
 import Vector from './Engine/Math/Vector';
@@ -56,6 +56,7 @@ export default class Game {
     private fps = new Fps();
     private readonly ecs = new ECS();
     private readonly entityFactory = new EntityFactory(this.ecs, entityMap, entityFactoryMap);
+    private readonly treeFactory = new TreeFactory(this.ecs, this.entityFactory, this.biomeMap);
     private readonly sheepFactory = new SheepFactory(this.ecs, this.entityFactory);
     private readonly wolfFactory = new WolfFactory(this.ecs, this.entityFactory);
     private camera: Entity;
@@ -135,9 +136,9 @@ export default class Game {
                 const ground = this.ecs.addEntity();
                 this.ecs.addComponent(ground, this.createGroundLayerComponent());
 
-                this.treeMap.all().forEach(position => this.createTreeAt(position));
-                this.createSheep();
-                this.createWolves();
+                this.treeMap.all().forEach(position => this.treeFactory.create(position));
+                Array.from({ length: config.generation.animals.sheep }, () => this.sheepFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
+                Array.from({ length: config.generation.animals.wolves }, () => this.wolfFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
 
                 Input.getInstance().onActionPressed(position => {
                     const factor = window.canvas.clientWidth / window.canvas.width;
@@ -189,33 +190,5 @@ export default class Game {
         }
 
         return new BiomeComponent(this.biomeMap, spriteOffsets);
-    }
-
-    private createTreeAt(position: Vector): void {
-        const tree = this.entityFactory.create('tree');
-        this.ecs.addComponent(tree, new Position(position.multiply(config.tileSize).add(new Vector(config.tileSize, config.tileSize).divide(2))));
-        const biome = this.biomeMap.get(position.x, position.y);
-        const imageName = `props/tree_${biome.image}`;
-        const img = ImageLoader.instance.getImage(imageName);
-        const sprite = new Sprite(
-            imageName,
-            biome.treeOffset,
-            new Vector(img.width, img.height),
-            new Vector(0, 0),
-            1,
-        );
-        this.ecs.addComponent(tree, sprite);
-    }
-
-    private createSheep(): void {
-        for (let i = 1; i <= config.generation.animals.sheep; i++) {
-            this.sheepFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize));
-        }
-    }
-
-    private createWolves(): void {
-        for (let i = 1; i <= config.generation.animals.wolves; i++) {
-            this.wolfFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize));
-        }
     }
 }
