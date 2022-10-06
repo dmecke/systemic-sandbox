@@ -1,3 +1,4 @@
+import Animal from '../Component/Animal';
 import Animation from '../Component/Animation';
 import CameraComponent from '../Component/CameraComponent';
 import CameraTarget from '../Component/CameraTarget';
@@ -18,11 +19,10 @@ import Player from '../Component/Player';
 import Position from '../Component/Position';
 import RandomMovement from '../Component/RandomMovement';
 import ReproductionUrge from '../Component/ReproductionUrge';
-import Sheep from '../Component/Sheep';
 import Sprite from '../Component/Sprite';
-import Wolf from '../Component/Wolf';
 
 const factories = new Map();
+factories.set('Animal', Animal);
 factories.set('Animation', Animation);
 factories.set('CameraComponent', CameraComponent);
 factories.set('CameraTarget', CameraTarget);
@@ -43,8 +43,6 @@ factories.set('Player', Player);
 factories.set('Position', Position);
 factories.set('RandomMovement', RandomMovement);
 factories.set('ReproductionUrge', ReproductionUrge);
-factories.set('Sheep', Sheep);
 factories.set('Sprite', Sprite);
-factories.set('Wolf', Wolf);
 
 export default factories;
