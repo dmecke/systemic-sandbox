@@ -1,0 +1,20 @@
+{
+    "Sprite": {
+        "image": "props/grass",
+        "anchor": {
+            "x": 4,
+            "y": 7
+        },
+        "size": {
+            "x": 8,
+            "y": 8
+        }
+    },
+    "Flammable": {},
+    "Health": {
+        "health": 50
+    },
+    "Interactable": {},
+    "Plant": {},
+    "Food": {}
+}

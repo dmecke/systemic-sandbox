@@ -17,6 +17,7 @@ import Entity from './Engine/ECS/Entity';
 import EntityFactory from './Engine/ECS/EntityFactory';
 import FireRenderer from './System/FireRenderer';
 import Fps from './Engine/Debug/Fps';
+import GrassFactory from './Entity/Factory/GrassFactory';
 import GrassGrower from './System/GrassGrower';
 import GroundFactory from './Entity/Factory/GroundFactory';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
@@ -60,6 +61,7 @@ export default class Game {
     private readonly sheepFactory = new SheepFactory(this.entityFactory);
     private readonly wolfFactory = new WolfFactory(this.entityFactory);
     private readonly groundFactory = new GroundFactory(this.entityFactory, this.biomeMap);
+    private readonly grassFactory = new GrassFactory(this.entityFactory);
     private camera: Entity;
     private player: Entity;
     private readonly map: Map;
@@ -114,7 +116,7 @@ export default class Game {
         this.ecs.addSystem(new AnimalReproduction('Sheep', this.sheepFactory));
         this.ecs.addSystem(new EatPlant());
         this.ecs.addSystem(new EatMeat());
-        this.ecs.addSystem(new GrassGrower(this.map));
+        this.ecs.addSystem(new GrassGrower(this.map, this.grassFactory));
         this.ecs.addSystem(new SpreadFire());
         this.ecs.addSystem(new ApplyFireDamage());
         this.ecs.addSystem(new ApplyHungerDamage());
@@ -147,6 +149,7 @@ export default class Game {
         this.groundFactory.create();
 
         this.treeMap.all().forEach(position => this.treeFactory.create(position));
+        Array.from({ length: config.generation.grass }, () => this.grassFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
         Array.from({ length: config.generation.animals.sheep }, () => this.sheepFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
         Array.from({ length: config.generation.animals.wolves }, () => this.wolfFactory.create(this.map.getRandomLandGridCell().multiply(config.tileSize)));
     }
