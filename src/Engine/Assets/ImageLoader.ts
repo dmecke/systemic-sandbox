@@ -5,7 +5,7 @@ export default class ImageLoader {
 
     static readonly instance = new ImageLoader();
 
-    private images: Record<string, HTMLImageElement> = {};
+    private images: Map<string, HTMLImageElement> = new Map();
 
     private constructor() {
         // noop
@@ -14,11 +14,11 @@ export default class ImageLoader {
     static async loadImages(images: string[]): Promise<void> {
         return new Promise(resolve => {
             let loaded = 0;
-            for (let i = 0; i < images.length; i++) {
-                ImageLoader.instance.images[images[i]] = new Image();
-                import('../../assets/images/' + images[i] + '.png')
-                    .then(image => {
-                        ImageLoader.instance.images[images[i]].src = image.default;
+            for (const image of images) {
+                ImageLoader.instance.images.set(image, new Image());
+                import('../../assets/images/' + image + '.png')
+                    .then(img => {
+                        ImageLoader.instance.images.get(image).src = img.default;
                         loaded++;
                         if (loaded === images.length) {
                             resolve();
@@ -33,9 +33,10 @@ export default class ImageLoader {
     }
 
     getImage(image: string): HTMLImageElement {
-        if (!this.images[image]) {
-            throw new Error('Could not find image with name "' + image + '".');
+        if (!this.images.has(image)) {
+            throw new Error(`Could not find image with name "${image}".`);
         }
-        return this.images[image];
+
+        return this.images.get(image);
     }
 }
