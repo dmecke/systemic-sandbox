@@ -1,7 +1,11 @@
+import Vector from '../Math/Vector';
+
 export default class Canvas {
 
     constructor(
         private readonly id: string,
+        private nativeResolution: Vector,
+        private maxScale: number,
     ) {
         window.addEventListener('resize', () => this.resize());
         this.resize();
@@ -13,20 +17,17 @@ export default class Canvas {
             throw new Error('No canvas found.');
         }
 
-        const size = this.getSize();
-        canvas.style.width = size[0].toString() + 'px';
-        canvas.style.height = size[1].toString() + 'px';
+        canvas.style.width = this.size.x.toString() + 'px';
+        canvas.style.height = this.size.y.toString() + 'px';
     }
 
-    private getSize(): number[] {
-        if (window.innerWidth >= 1280) {
-            return [1280, 720];
+    private get size(): Vector {
+        for (let i = this.maxScale; i >= 1; i--) {
+            if (window.innerWidth >= this.nativeResolution.multiply(i).x) {
+                return this.nativeResolution.multiply(i);
+            }
         }
 
-        if (window.innerWidth >= 640) {
-            return [640, 360];
-        }
-
-        return [320, 180];
+        return this.nativeResolution;
     }
 }

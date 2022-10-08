@@ -7,6 +7,7 @@ import ImageLoader from './Engine/Assets/ImageLoader';
 import MoistureMapRenderer from './Renderer/MoistureMapRenderer';
 import TileRenderer from './Renderer/TileRenderer';
 import TreeMapRenderer from './Renderer/TreeMapRenderer';
+import Vector from './Engine/Math/Vector';
 import alea from 'alea';
 import {createNoise2D} from 'simplex-noise';
 import generateBiomeMap from './ProceduralGeneration/generateBiomeMap';
@@ -48,7 +49,7 @@ setTimeout(() => tileRenderer.render(), 500);
 
 
 
-new Canvas('canvas_game');
+new Canvas('canvas_game', new Vector(320, 180), 5);
 
 window.debugging = new Debugging();
 
