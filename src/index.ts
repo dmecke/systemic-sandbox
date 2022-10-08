@@ -3,6 +3,7 @@ import Canvas from './Engine/Canvas/Canvas';
 import Debugging from './Debug/Debugging';
 import Game from './Game';
 import HeightMapRenderer from './Renderer/HeightMapRenderer';
+import ImageLoader from './Engine/Assets/ImageLoader';
 import MoistureMapRenderer from './Renderer/MoistureMapRenderer';
 import TileRenderer from './Renderer/TileRenderer';
 import TreeMapRenderer from './Renderer/TreeMapRenderer';
@@ -12,6 +13,7 @@ import generateBiomeMap from './ProceduralGeneration/generateBiomeMap';
 import generateHeightMap from './ProceduralGeneration/generateHeightMap';
 import generateMoistureMap from './ProceduralGeneration/generateMoistureMap';
 import generateTreeMap from './ProceduralGeneration/generateTreeMap';
+import images from './assets/images.json';
 
 const canvasHeight = document.getElementById('canvas_height') as HTMLCanvasElement;
 const canvasMoisture = document.getElementById('canvas_moisture') as HTMLCanvasElement;
@@ -57,4 +59,4 @@ if (ctx === null) {
 }
 window.ctx = ctx;
 
-window.addEventListener('load', () => new Game(biomeMap, treeMap));
+window.addEventListener('load', () => ImageLoader.loadImages(images).then(() => new Game(biomeMap, treeMap)));

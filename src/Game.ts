@@ -22,7 +22,6 @@ import GrassFactory from './Entity/Factory/GrassFactory';
 import GrassGrower from './System/GrassGrower';
 import GroundFactory from './Entity/Factory/GroundFactory';
 import GroundLayerRenderer from './System/GroundLayerRenderer';
-import ImageLoader from './Engine/Assets/ImageLoader';
 import IncreaseHunger from './System/IncreaseHunger';
 import IncreaseReproductionUrge from './System/IncreaseReproductionUrge';
 import Input from './Input/Input';
@@ -54,7 +53,6 @@ import WolfFactory from './Entity/Factory/WolfFactory';
 import config from './assets/config.json';
 import entityFactoryMap from './Entity/entityFactoryMap';
 import entityMap from './Entity/entityMap';
-import images from './assets/images.json';
 
 export default class Game {
     private fps = new Fps();
@@ -75,17 +73,12 @@ export default class Game {
     ) {
         this.map = new Map(biomeMap);
 
-        ImageLoader
-            .loadImages(images)
-            .then(() => {
-                this.createSystems();
-                this.createEntities();
+        this.createSystems();
+        this.createEntities();
 
-                Input.getInstance().onActionPressed(position => this.handleClick(position));
+        Input.getInstance().onActionPressed(position => this.handleClick(position));
 
-                requestAnimationFrame(() => this.update());
-            })
-        ;
+        requestAnimationFrame(() => this.update());
     }
 
     update(): void {
