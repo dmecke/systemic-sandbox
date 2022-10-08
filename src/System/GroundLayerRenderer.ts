@@ -10,21 +10,21 @@ import config from '../assets/config.json';
 
 export default class GroundLayerRenderer extends System {
     update(query: Query): void {
-        const [positionComponent] = query.allComponents(Position, CameraComponent)[0];
+        const [positionComponent] = query.oneComponent(Position, CameraComponent);
         const cameraPosition = positionComponent.position;
 
-        for (const [biomeComponent] of query.allComponents(BiomeComponent)) {
-            this
-                .getMap(biomeComponent, cameraPosition)
-                .forEach(tile => {
-                    this.drawTile(
-                        tile.biome,
-                        tile.position.multiply(config.tileSize),
-                        biomeComponent.spriteOffsets.get(tile.position.x, tile.position.y),
-                    );
-                })
-            ;
-        }
+        const [biomeComponent] = query.oneComponent(BiomeComponent);
+
+        this
+            .getMap(biomeComponent, cameraPosition)
+            .forEach(tile => {
+                this.drawTile(
+                    tile.biome,
+                    tile.position.multiply(config.tileSize),
+                    biomeComponent.spriteOffsets.get(tile.position.x, tile.position.y),
+                );
+            })
+        ;
     }
 
     drawTile(biome: Biome, position: Vector, sprite: Vector): void {
@@ -42,13 +42,12 @@ export default class GroundLayerRenderer extends System {
     }
 
     private getMap(groundLayerComponent: BiomeComponent, cameraPosition: Vector): { biome: Biome, position: Vector }[] {
-        const buffer = new Vector(2, 2);
-        const cameraTopLeftTile = cameraPosition.divide(config.tileSize).floor().subtract(buffer);
-        const cameraBottomRightTile = cameraTopLeftTile.add(this.cameraSize).add(buffer.multiply(2));
+        const cameraTopLeftTile = cameraPosition.divide(config.tileSize).floor();
+        const cameraBottomRightTile = cameraTopLeftTile.add(this.cameraSize);
 
         const map = [];
-        for (let y = cameraTopLeftTile.y; y < cameraBottomRightTile.y; y++) {
-            for (let x = cameraTopLeftTile.x; x < cameraBottomRightTile.x; x++) {
+        for (let y = cameraTopLeftTile.y; y <= cameraBottomRightTile.y; y++) {
+            for (let x = cameraTopLeftTile.x; x <= cameraBottomRightTile.x; x++) {
                 if (groundLayerComponent.biomeMap.has(x, y)) {
                     const position = new Vector(x, y);
                     const biome = groundLayerComponent.biomeMap.get(x, y);
