@@ -19,9 +19,11 @@ export default class ImageLoader {
                 import('../../assets/images/' + image + '.png')
                     .then(img => {
                         ImageLoader.instance.images.get(image).src = img.default;
-                        loaded++;
-                        if (loaded === images.length) {
-                            resolve();
+                        ImageLoader.instance.images.get(image).onload = () => {
+                            loaded++;
+                            if (loaded === images.length) {
+                                resolve();
+                            }
                         }
                     });
             }
