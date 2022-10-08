@@ -9,6 +9,10 @@ export default class Gender extends Component {
         super();
     }
 
+    equals(other: Gender): boolean {
+        return this.gender === other.gender;
+    }
+
     static random(): Gender {
         return new Gender(Rng.getInstance(window.seed.toString()).choose(['male', 'female']));
     }

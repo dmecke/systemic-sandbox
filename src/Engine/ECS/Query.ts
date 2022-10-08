@@ -83,6 +83,16 @@ export default class Query {
         return this.componentStorage.get(componentClass.name).has(entity);
     }
 
+    hasComponents<T extends Component>(entity: Entity, ...componentClasses: ComponentClass<T>[]): boolean {
+        for (const componentClass of componentClasses) {
+            if (!this.hasComponent(entity, componentClass)) {
+                return false
+            }
+        }
+
+        return true;
+    }
+
     getComponent<T extends Component>(entity: Entity, componentClass: ComponentClass<T>): T {
         if (!this.componentStorage.has(componentClass.name)) {
             throw new Error(`Entity ${entity} does not have a component ${componentClass.name}.`);

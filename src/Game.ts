@@ -5,6 +5,7 @@ import AnimalReproductionTargetAssigner from './System/AnimalReproductionTargetA
 import Animator from './System/Animator';
 import ApplyFireDamage from './System/ApplyFireDamage';
 import ApplyHungerDamage from './System/ApplyHungerDamage';
+import Area from './Engine/Math/Area';
 import BiomeMap from './ProceduralGeneration/BiomeMap';
 import CameraComponent from './Component/CameraComponent';
 import CameraFocusUpdater from './System/CameraFocusUpdater';
@@ -35,6 +36,7 @@ import MovementTargetRemover from './System/MovementTargetRemover';
 import OnFire from './Component/OnFire';
 import PlantFoodTargetAssigner from './System/PlantFoodTargetAssigner';
 import Position from './Component/Position';
+import QuadTree from './Engine/Type/QuadTree';
 import RandomMovementTargetAssigner from './System/RandomMovementTargetAssigner';
 import RemoveIsInViewport from './System/RemoveIsInViewport';
 import RemoveWithoutHealth from './System/RemoveWithoutHealth';
@@ -45,6 +47,7 @@ import SpriteRenderer from './System/SpriteRenderer';
 import TranslateCanvasContext from './System/TranslateCanvasContext';
 import TreeFactory from './Entity/Factory/TreeFactory';
 import TreeMap from './ProceduralGeneration/TreeMap';
+import UpdateQuadTree from './System/UpdateQuadTree';
 import UpdateZIndex from './System/UpdateZIndex';
 import Vector from './Engine/Math/Vector';
 import WolfFactory from './Entity/Factory/WolfFactory';
@@ -65,6 +68,7 @@ export default class Game {
     private camera: Entity;
     private player: Entity;
     private readonly map: Map;
+    private readonly quadTree: QuadTree<Entity> = new QuadTree<Entity>(new Area(Vector.null(), new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize)), 128);
 
     constructor(
         private readonly biomeMap: BiomeMap,
@@ -106,15 +110,17 @@ export default class Game {
         this.ecs.addSystem(new MoveToMovementTarget());
         this.ecs.addSystem(new MovementTargetRemover());
 
+        this.ecs.addSystem(new UpdateQuadTree(this.quadTree)); // after all movements
+
         this.ecs.addSystem(new IncreaseHunger());
         this.ecs.addSystem(new IncreaseReproductionUrge());
-        this.ecs.addSystem(new PlantFoodTargetAssigner());
-        this.ecs.addSystem(new MeatFoodTargetAssigner());
-        this.ecs.addSystem(new AnimalReproductionTargetAssigner('Wolf'));
-        this.ecs.addSystem(new AnimalReproductionTargetAssigner('Sheep'));
-        this.ecs.addSystem(new AnimalReproduction('Wolf', this.wolfFactory));
-        this.ecs.addSystem(new AnimalReproduction('Sheep', this.sheepFactory));
-        this.ecs.addSystem(new EatPlant());
+        this.ecs.addSystem(new PlantFoodTargetAssigner(this.quadTree));
+        this.ecs.addSystem(new MeatFoodTargetAssigner(this.quadTree));
+        this.ecs.addSystem(new AnimalReproductionTargetAssigner(this.quadTree, 'Wolf'));
+        this.ecs.addSystem(new AnimalReproductionTargetAssigner(this.quadTree, 'Sheep'));
+        this.ecs.addSystem(new AnimalReproduction(this.wolfFactory, 'Wolf'));
+        this.ecs.addSystem(new AnimalReproduction(this.sheepFactory, 'Sheep'));
+        this.ecs.addSystem(new EatPlant(this.quadTree));
         this.ecs.addSystem(new EatMeat());
         this.ecs.addSystem(new GrassGrower(this.map, this.grassFactory));
         this.ecs.addSystem(new SpreadFire());

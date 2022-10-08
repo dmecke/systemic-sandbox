@@ -8,9 +8,9 @@
             "y": 180
         },
         "heightLevels": 5,
-        "grass": 100,
+        "grass": 1000,
         "animals": {
-            "sheep": 100,
+            "sheep": 1000,
             "wolves": 10
         }
     },

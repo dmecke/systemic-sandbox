@@ -1,4 +1,4 @@
-import Vector from '../Engine/Math/Vector';
+import Vector from '../Math/Vector';
 
 export default class VectorMap {
     private map: Map<number, Map<number, Vector>> = new Map();

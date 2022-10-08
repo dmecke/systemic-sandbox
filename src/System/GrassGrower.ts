@@ -25,7 +25,7 @@ export default class GrassGrower extends System {
             const biome = this.map.getBiomeAt(targetPosition);
             if (Rng.getInstance(window.seed.toString()).chance(biome.grassChance)) {
                 if (grass.filter(([position]) => position.position.divide(config.tileSize).distanceTo(targetPosition) < 2).length === 0) {
-                    this.grassFactory.create(targetPosition);
+                    this.grassFactory.create(targetPosition.multiply(config.tileSize));
                 }
             }
         }

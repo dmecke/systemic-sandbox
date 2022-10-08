@@ -1,4 +1,5 @@
 import Animal from '../Component/Animal';
+import Gender from '../Component/Gender';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
 import ReproductionUrge from '../Component/ReproductionUrge';
@@ -7,25 +8,28 @@ import Vector from '../Engine/Math/Vector';
 
 export default class AnimalReproduction extends System {
     constructor(
-        private readonly animal: string,
         private readonly entityFactory: { create(position: Vector) },
+        private readonly animal: string,
     ) {
         super();
     }
 
     update(query: Query): void {
         const animals = query
-            .allComponents(ReproductionUrge, Position, Animal)
+            .allComponents(ReproductionUrge, Position, Animal, Gender)
             .filter(([, , animal]) => animal.type === this.animal)
             .filter(([urge]) => urge.urge >= 50)
         ;
 
-        for (let i = 0; i < animals.length; i++) {
-            for (let j = i + 1; j < animals.length; j++) {
-                if (animals[i][1].position.distanceTo(animals[j][1].position) <= 1) {
-                    animals[i][0].urge = 0;
-                    animals[j][0].urge = 0;
-                    this.entityFactory.create(animals[i][1].position);
+        const maleAnimals = animals.filter(([, , , gender]) => gender.gender === 'male');
+        const femaleAnimals = animals.filter(([, , , gender]) => gender.gender === 'female');
+
+        for (let i = 0; i < maleAnimals.length; i++) {
+            for (let j = 0; j < femaleAnimals.length; j++) {
+                if (!maleAnimals[i][3].equals(femaleAnimals[j][3]) && maleAnimals[i][1].position.distanceTo(femaleAnimals[j][1].position) <= 1) {
+                    maleAnimals[i][0].urge = 0;
+                    femaleAnimals[j][0].urge = 0;
+                    this.entityFactory.create(maleAnimals[i][1].position);
                 }
             }
         }
