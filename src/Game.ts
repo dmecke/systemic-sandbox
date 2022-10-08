@@ -58,7 +58,7 @@ import images from './assets/images.json';
 
 export default class Game {
     private fps = new Fps();
-    private readonly ecs = new ECS();
+    private readonly ecs = new ECS(new QuadTree<Entity>(new Area(Vector.null(), new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize)), 128));
     private readonly entityFactory = new EntityFactory(this.ecs, entityMap, entityFactoryMap);
     private readonly treeFactory = new TreeFactory(this.entityFactory, this.biomeMap);
     private readonly sheepFactory = new SheepFactory(this.entityFactory);
@@ -68,7 +68,6 @@ export default class Game {
     private camera: Entity;
     private player: Entity;
     private readonly map: Map;
-    private readonly quadTree: QuadTree<Entity> = new QuadTree<Entity>(new Area(Vector.null(), new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize)), 128);
 
     constructor(
         private readonly biomeMap: BiomeMap,
@@ -110,17 +109,17 @@ export default class Game {
         this.ecs.addSystem(new MoveToMovementTarget());
         this.ecs.addSystem(new MovementTargetRemover());
 
-        this.ecs.addSystem(new UpdateQuadTree(this.quadTree)); // after all movements
+        this.ecs.addSystem(new UpdateQuadTree()); // after all movements
 
         this.ecs.addSystem(new IncreaseHunger());
         this.ecs.addSystem(new IncreaseReproductionUrge());
-        this.ecs.addSystem(new PlantFoodTargetAssigner(this.quadTree));
-        this.ecs.addSystem(new MeatFoodTargetAssigner(this.quadTree));
-        this.ecs.addSystem(new AnimalReproductionTargetAssigner(this.quadTree, 'Wolf'));
-        this.ecs.addSystem(new AnimalReproductionTargetAssigner(this.quadTree, 'Sheep'));
+        this.ecs.addSystem(new PlantFoodTargetAssigner());
+        this.ecs.addSystem(new MeatFoodTargetAssigner());
+        this.ecs.addSystem(new AnimalReproductionTargetAssigner('Wolf'));
+        this.ecs.addSystem(new AnimalReproductionTargetAssigner('Sheep'));
         this.ecs.addSystem(new AnimalReproduction(this.wolfFactory, 'Wolf'));
         this.ecs.addSystem(new AnimalReproduction(this.sheepFactory, 'Sheep'));
-        this.ecs.addSystem(new EatPlant(this.quadTree));
+        this.ecs.addSystem(new EatPlant());
         this.ecs.addSystem(new EatMeat());
         this.ecs.addSystem(new GrassGrower(this.map, this.grassFactory));
         this.ecs.addSystem(new SpreadFire());

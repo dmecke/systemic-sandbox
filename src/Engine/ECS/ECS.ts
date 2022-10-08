@@ -1,5 +1,6 @@
 import Component from './Component';
 import Entity from './Entity';
+import QuadTree from '../Type/QuadTree';
 import Query from './Query';
 import System from './System';
 
@@ -10,6 +11,11 @@ export default class ECS {
 
     private nextEntityId = 1;
     private entitiesToDestroy = new Array<Entity>();
+
+    constructor(
+        readonly quadTree: QuadTree<Entity>,
+    ) {
+    }
 
     addEntity(): Entity {
         const entity = this.nextEntityId;
@@ -30,7 +36,7 @@ export default class ECS {
     }
 
     get query(): Query {
-        return new Query(this.componentStorage);
+        return new Query(this.componentStorage, this.quadTree);
     }
 
     // eslint-disable-next-line @typescript-eslint/ban-types

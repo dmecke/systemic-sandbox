@@ -1,11 +1,14 @@
+import Circle from '../Math/Circle';
 import Component from './Component';
 import ComponentClass from './ComponentClass';
 import Entity from './Entity';
+import QuadTree from '../Type/QuadTree';
 
 export default class Query {
 
     constructor(
         private readonly componentStorage: Map<string, Map<Entity, Component>>,
+        private readonly quadTree: QuadTree<Entity>,
     ) {
     }
 
@@ -35,6 +38,16 @@ export default class Query {
         return allValues;
     }
 
+    allComponentsAt(circle: Circle, ...componentClasses) {
+        return this
+            .quadTree
+            .queryCircle(circle)
+            .map(element => element.data)
+            .filter(entity => this.hasComponents(entity, ...componentClasses))
+            .map(entity => componentClasses.map(componentClass => this.componentStorage.get(componentClass.name).get(entity)))
+        ;
+    }
+
     allEntities(...componentClasses) {
         const smallestType = this.getSmallestType(...componentClasses);
 
@@ -59,6 +72,16 @@ export default class Query {
         });
 
         return entities;
+    }
+
+    allEntitiesAt(circle: Circle, ...componentClasses) {
+        return this
+            .quadTree
+            .queryCircle(circle)
+            .map(element => element.data)
+            .filter(entity => this.hasComponents(entity, ...componentClasses))
+            .map(entity => [entity, ...componentClasses.map(componentClass => this.componentStorage.get(componentClass.name).get(entity))])
+        ;
     }
 
     oneComponent(...componentClasses) {
