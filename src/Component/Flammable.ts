@@ -3,7 +3,7 @@ import Component from '../Engine/ECS/Component';
 export default class Flammable extends Component {
 
     constructor(
-        readonly resistance: number,
+        public resistance: number,
     ) {
         super();
     }

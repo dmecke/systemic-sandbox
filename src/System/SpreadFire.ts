@@ -1,3 +1,5 @@
+import Circle from '../Engine/Math/Circle';
+import Entity from '../Engine/ECS/Entity';
 import Flammable from '../Component/Flammable';
 import OnFire from '../Component/OnFire';
 import Position from '../Component/Position';
@@ -13,20 +15,17 @@ export default class SpreadFire extends System {
             return;
         }
 
-        const flammable = query
-            .allEntities(Position, Flammable)
-            .filter(([entity]) => !query.hasComponent(entity, OnFire))
-        ;
-
         for (const [onFirePositionComponent] of onFire) {
-            flammable
+            this
+                .ecs
+                .query
+                .allEntitiesAt(new Circle(onFirePositionComponent.position, config.systems.fireSpreadDistance), Flammable, Position)
                 .filter(() => Rng.getInstance(window.seed.toString()).chance(50))
-                .filter(([entity]) => !this.ecs.query.hasComponent(entity, OnFire))
-                .filter(([, flammablePositionComponent]) => onFirePositionComponent.position.distanceTo(flammablePositionComponent.position) <= config.systems.fireSpreadDistance)
-                .forEach(([entity, , flammableComponent]) => {
-                    flammableComponent.resistance--;
-                    if (flammableComponent.resistance <= 0) {
-                        this.ecs.addComponent(entity, new OnFire());
+                .filter(([entity]) => !this.ecs.query.hasComponent((entity as Entity), OnFire))
+                .forEach(([entity, flammableComponent]) => {
+                    (flammableComponent as Flammable).resistance--;
+                    if ((flammableComponent as Flammable).resistance <= 0) {
+                        this.ecs.addComponent((entity as Entity), new OnFire());
                     }
                 })
             ;
