@@ -145,7 +145,9 @@ export default class Game {
     }
 
     private createEntities(): void {
-        this.camera = this.entityFactory.create('camera');
+        this.camera = this.entityFactory.create('camera', [
+            new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).subtract(new Vector(window.canvas.width, window.canvas.height)).divide(2)),
+        ]);
 
         this.player = this.entityFactory.create('player', [
             new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).divide(2)),

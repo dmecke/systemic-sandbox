@@ -9,22 +9,45 @@ import Vector from '../Engine/Math/Vector';
 import config from '../assets/config.json';
 
 export default class GroundLayerRenderer extends System {
+    private readonly offscreenCanvas: HTMLCanvasElement;
+    private readonly offscreenCtx: CanvasRenderingContext2D;
+    private cameraPosition: Vector|null = null;
+
+    constructor() {
+        super();
+
+        this.offscreenCanvas = document.createElement('canvas');
+        this.offscreenCanvas.width = window.canvas.width;
+        this.offscreenCanvas.height = window.canvas.height;
+        this.offscreenCanvas.style.imageRendering = '-moz-crisp-edges';
+        this.offscreenCanvas.style.imageRendering = '-webkit-crisp-edges';
+        this.offscreenCanvas.style.imageRendering = 'pixelated';
+        this.offscreenCanvas.style.imageRendering = 'crisp-edges';
+        this.offscreenCtx = this.offscreenCanvas.getContext('2d');
+    }
+
     update(query: Query): void {
         const [positionComponent] = query.oneComponent(Position, CameraComponent);
         const cameraPosition = positionComponent.position;
 
         const [biomeComponent] = query.oneComponent(BiomeComponent);
 
-        this
-            .getMap(biomeComponent, cameraPosition)
-            .forEach(tile => {
-                this.drawTile(
-                    tile.biome,
-                    tile.position.multiply(config.tileSize),
-                    biomeComponent.spriteOffsets.get(tile.position.x, tile.position.y),
-                );
-            })
-        ;
+        if (this.cameraPosition === null || !this.cameraPosition.equals(cameraPosition)) {
+            this.cameraPosition = cameraPosition;
+            this.offscreenCtx.clearRect(0, 0, this.offscreenCanvas.width, this.offscreenCanvas.height);
+            this
+                .getMap(biomeComponent, cameraPosition)
+                .forEach(tile => {
+                    this.drawTile(
+                        tile.biome,
+                        tile.position.multiply(config.tileSize).subtract(cameraPosition).floor(),
+                        biomeComponent.spriteOffsets.get(tile.position.x, tile.position.y),
+                    );
+                })
+            ;
+        }
+
+        window.ctx.drawImage(this.offscreenCanvas, Math.ceil(cameraPosition.x), Math.ceil(cameraPosition.y));
     }
 
     drawTile(biome: Biome, position: Vector, sprite: Vector): void {
@@ -35,7 +58,7 @@ export default class GroundLayerRenderer extends System {
                 sprite.multiply(config.tileSize),
                 new Vector(config.tileSize, config.tileSize),
                 position,
-            ).draw();
+            ).draw(this.offscreenCtx);
         } catch (e) {
             throw new Error(`Could not render tile "${imageName}" at ${position.x}|${position.y}.\n\n${e}`);
         }
