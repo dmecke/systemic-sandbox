@@ -51,7 +51,7 @@ export default class GroundLayerRenderer extends System {
     }
 
     drawTile(biome: Biome, position: Vector, sprite: Vector): void {
-        const imageName = `tiles/${biome.image}`;
+        const imageName = `tiles/${biome.image}.png`;
         try {
             ImageLoader.instance.fromName(
                 imageName,

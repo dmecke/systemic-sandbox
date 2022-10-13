@@ -16,7 +16,7 @@ export default class TreeFactory {
 
     create(position: Vector): Entity {
         const biome = this.biomeMap.get(position.x, position.y);
-        const imageName = `props/tree_${biome.image}`;
+        const imageName = `props/tree_${biome.image}.png`;
         const img = ImageLoader.instance.getImage(imageName);
         const sprite = new Sprite(
             imageName,

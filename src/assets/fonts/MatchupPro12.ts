@@ -3,7 +3,7 @@ import Glyph from '../../Engine/Font/Glyph';
 
 export default class MatchupPro12 implements FontFace {
 
-    readonly image = 'fonts/matchup_pro_12_black';
+    readonly image = 'fonts/matchup_pro_12_black.png';
 
     readonly glyphs = new Map([
         [' ', new Glyph(2, 2, 5, 14)],

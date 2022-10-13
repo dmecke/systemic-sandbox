@@ -1,7 +1,7 @@
 {
     "Player": {},
     "Sprite": {
-        "image": "characters/player",
+        "image": "characters/player.png",
         "anchor": {
             "x": 16,
             "y": 19

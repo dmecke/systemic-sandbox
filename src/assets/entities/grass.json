@@ -1,6 +1,6 @@
 {
     "Sprite": {
-        "image": "props/grass",
+        "image": "props/grass.png",
         "anchor": {
             "x": 4,
             "y": 7

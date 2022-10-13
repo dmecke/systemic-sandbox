@@ -16,7 +16,7 @@ export default class ImageLoader {
             let loaded = 0;
             for (const image of images) {
                 ImageLoader.instance.images.set(image, new Image());
-                import('../../assets/images/' + image + '.png')
+                import('../../assets/images/' + image)
                     .then(img => {
                         ImageLoader.instance.images.get(image).src = img.default;
                         ImageLoader.instance.images.get(image).onload = () => {

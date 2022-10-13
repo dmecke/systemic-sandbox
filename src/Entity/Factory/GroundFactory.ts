@@ -162,7 +162,7 @@ export default class GroundFactory {
         }
 
         const biome = this.biomeMap.get(position.x, position.y);
-        const img = ImageLoader.instance.getImage(`tiles/${biome.image}`);
+        const img = ImageLoader.instance.getImage(`tiles/${biome.image}.png`);
         return new Vector(
             Math.floor(Math.random() * (img.width as number) / config.tileSize),
             0,

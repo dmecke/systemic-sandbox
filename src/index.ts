@@ -44,7 +44,6 @@ new TreeMapRenderer(treeMap, ctxTree).render();
 new BiomeRenderer(biomeMap, ctxBiomes).render();
 
 const tileRenderer = new TileRenderer(heightMap, moistureMap, ctxTiles);
-setTimeout(() => tileRenderer.render(), 500);
 
 
 
@@ -60,4 +59,7 @@ if (ctx === null) {
 }
 window.ctx = ctx;
 
-window.addEventListener('load', () => ImageLoader.loadImages(images).then(() => new Game(biomeMap, treeMap)));
+window.addEventListener('load', () => ImageLoader.loadImages(images).then(() => {
+    tileRenderer.render();
+    new Game(biomeMap, treeMap);
+}));

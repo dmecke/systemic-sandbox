@@ -15,7 +15,7 @@ export default class TileRenderer {
         for (let y = 0; y < size.y; y++) {
             for (let x = 0; x < size.x; x++) {
                 const biome = factory(this.heightMap[y][x], this.moistureMap[y][x]);
-                const img = ImageLoader.instance.getImage(`tiles/${biome.image}`);
+                const img = ImageLoader.instance.getImage(`tiles/${biome.image}.png`);
                 this.context.drawImage(
                     img,
                     Math.floor(Math.random() * (img.width as number) / 8) * 8,

@@ -10,7 +10,7 @@ import Vector from '../Engine/Math/Vector';
 export default class FireRenderer extends System {
     update(query: Query): void {
         for (const [positionComponent, sprite] of query.allComponents(Position, Sprite, OnFire, InViewport)) {
-            const image = 'effects/fire';
+            const image = 'effects/fire.png';
             const size = new Vector(24, 24);
             try {
                 ImageLoader.instance.fromName(

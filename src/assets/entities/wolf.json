@@ -1,6 +1,6 @@
 {
     "Sprite": {
-        "image": "characters/wolf",
+        "image": "characters/wolf.png",
         "anchor": {
             "x": 16,
             "y": 19
