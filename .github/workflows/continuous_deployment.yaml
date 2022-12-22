@@ -11,6 +11,8 @@ jobs:
         steps:
             - name: checkout
               uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
 
             - name: install node.js
               uses: actions/setup-node@v2
