@@ -24,6 +24,13 @@ jobs:
             - name: build
               run: yarn run build
 
+            - name: add metadata
+              run: |
+                  touch dist/meta
+                  git log --format=%cd | tail -1 >> dist/meta
+                  git log -1 --format=%cd >> dist/meta
+                  grep -A 1 "@dmecke/game-engine@" yarn.lock | tail -1 | awk '{print $2}' | tr -d '"' >> dist/meta
+
             - name: deploy
               uses: easingthemes/ssh-deploy@v2
               env:
@@ -31,4 +38,4 @@ jobs:
                   SOURCE: "dist/"
                   REMOTE_HOST: "server20.cunningsoft.de"
                   REMOTE_USER: "dmecke"
-                  TARGET: "/var/www/html/cunningsoft.de/systemic-sandbox/"
+                  TARGET: "/var/www/html/cunningsoft.de/games/systemic-sandbox/"
