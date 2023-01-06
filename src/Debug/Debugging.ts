@@ -1,4 +1,4 @@
-import Debug from '../Engine/Debug/Debug';
+import Debug from '@dmecke/game-engine/lib/Debug/Debug';
 
 export default class Debugging {
 

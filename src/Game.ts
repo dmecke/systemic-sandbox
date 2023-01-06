@@ -17,7 +17,7 @@ import EatPlant from './System/EatPlant';
 import Entity from './Engine/ECS/Entity';
 import EntityFactory from './Engine/ECS/EntityFactory';
 import FireRenderer from './System/FireRenderer';
-import Fps from './Engine/Debug/Fps';
+import Fps from '@dmecke/game-engine/lib/Debug/Fps';
 import GrassFactory from './Entity/Factory/GrassFactory';
 import GrassGrower from './System/GrassGrower';
 import GroundFactory from './Entity/Factory/GroundFactory';
