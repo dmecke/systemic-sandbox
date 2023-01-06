@@ -1,5 +1,5 @@
 import Animal from '../Component/Animal';
-import Font from '../Engine/Font/Font';
+import Font from '@dmecke/game-engine/lib/Font/Font';
 import Food from '../Component/Food';
 import MatchupPro12 from '../assets/fonts/MatchupPro12';
 import Plant from '../Component/Plant';
@@ -21,7 +21,7 @@ export default class DisplayStatistics extends System {
     }
 
     private draw(text: string): void {
-        new Font(new MatchupPro12()).alignLeft().at(new Vector(4, this.offset)).draw(text);
+        new Font(new MatchupPro12()).alignLeft().at(new Vector(4, this.offset)).text(text).draw(window.ctx);
         this.offset += 10;
     }
 }
