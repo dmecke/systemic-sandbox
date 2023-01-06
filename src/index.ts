@@ -1,5 +1,5 @@
 import BiomeRenderer from './Renderer/BiomeRenderer';
-import Canvas from './Engine/Canvas/Canvas';
+import Canvas from '@dmecke/game-engine/lib/Canvas/Canvas';
 import Debugging from './Debug/Debugging';
 import Game from './Game';
 import HeightMapRenderer from './Renderer/HeightMapRenderer';
@@ -7,7 +7,6 @@ import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import MoistureMapRenderer from './Renderer/MoistureMapRenderer';
 import TileRenderer from './Renderer/TileRenderer';
 import TreeMapRenderer from './Renderer/TreeMapRenderer';
-import Vector from '@dmecke/game-engine/lib/Math/Vector';
 import alea from 'alea';
 import {createNoise2D} from 'simplex-noise';
 import generateBiomeMap from './ProceduralGeneration/generateBiomeMap';
@@ -45,21 +44,15 @@ new BiomeRenderer(biomeMap, ctxBiomes).render();
 
 const tileRenderer = new TileRenderer(heightMap, moistureMap, ctxTiles);
 
-
-
-
-new Canvas('canvas_game', new Vector(320, 180), 5);
-
+window.canvas = new Canvas('canvas_game', 5);
+window.ctx = window.canvas.ctx;
 window.debugging = new Debugging();
 
-window.canvas = document.getElementById('canvas_game') as HTMLCanvasElement;
-const ctx = window.canvas.getContext('2d');
-if (ctx === null) {
-    throw new Error('Could not create context 2d.');
-}
-window.ctx = ctx;
-
-window.addEventListener('load', () => ImageLoader.loadImages(images).then(() => {
-    tileRenderer.render();
-    new Game(biomeMap, treeMap);
-}));
+window.addEventListener('load', () => {
+    Promise.all([
+        ImageLoader.loadImages(images),
+    ]).then(() => {
+        tileRenderer.render();
+        new Game(biomeMap, treeMap);
+    });
+});

@@ -1,9 +1,10 @@
+import Canvas from '@dmecke/game-engine/lib/Canvas/Canvas';
 import Debugging from './src/Debug/Debugging';
 
 declare global {
     interface Window {
         debugging: Debugging;
-        canvas: HTMLCanvasElement;
+        canvas: Canvas;
         ctx: CanvasRenderingContext2D;
         seed: number;
     }

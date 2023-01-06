@@ -139,7 +139,7 @@ export default class Game {
 
     private createEntities(): void {
         this.camera = this.entityFactory.create('camera', [
-            new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).subtract(new Vector(window.canvas.width, window.canvas.height)).divide(2)),
+            new Position(new Vector(config.generation.size.x, config.generation.size.y).multiply(config.tileSize).subtract(new Vector(window.canvas.canvas.width, window.canvas.canvas.height)).divide(2)),
         ]);
 
         this.player = this.entityFactory.create('player', [
@@ -155,7 +155,7 @@ export default class Game {
     }
 
     private handleClick(position: Vector): void {
-        const factor = window.canvas.clientWidth / window.canvas.width;
+        const factor = window.canvas.canvas.clientWidth / window.canvas.canvas.width;
         const [positionComponent] = this.ecs.query.oneComponent(Position, CameraComponent);
         const target = positionComponent.position.add(position.divide(factor)).round();
 

@@ -17,8 +17,8 @@ export default class GroundLayerRenderer extends System {
         super();
 
         this.offscreenCanvas = document.createElement('canvas');
-        this.offscreenCanvas.width = window.canvas.width;
-        this.offscreenCanvas.height = window.canvas.height;
+        this.offscreenCanvas.width = window.canvas.canvas.width;
+        this.offscreenCanvas.height = window.canvas.canvas.height;
         this.offscreenCanvas.style.imageRendering = '-moz-crisp-edges';
         this.offscreenCanvas.style.imageRendering = '-webkit-crisp-edges';
         this.offscreenCanvas.style.imageRendering = 'pixelated';

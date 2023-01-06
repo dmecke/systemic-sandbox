@@ -56,8 +56,8 @@ export default class Mouse {
 
     private onMouseDown(event: MouseEvent): void {
         const position = new Vector(
-            event.clientX - window.canvas.getBoundingClientRect().left,
-            event.clientY - window.canvas.getBoundingClientRect().top,
+            event.clientX - window.canvas.canvas.getBoundingClientRect().left,
+            event.clientY - window.canvas.canvas.getBoundingClientRect().top,
         ).floor();
         if (!this.clickedButtons.has(event.button)) {
             this.clickedListeners.forEach(listener => listener.handle(event.button, position));
@@ -72,8 +72,8 @@ export default class Mouse {
 
     private onMouseUp(event: MouseEvent): void {
         const position = new Vector(
-            event.clientX - window.canvas.getBoundingClientRect().left,
-            event.clientY - window.canvas.getBoundingClientRect().top,
+            event.clientX - window.canvas.canvas.getBoundingClientRect().left,
+            event.clientY - window.canvas.canvas.getBoundingClientRect().top,
         ).floor();
         this.releasedListeners.forEach(listener => listener.handle(event.button, position));
         this.anyReleasedCallbacks.forEach(callback => callback());
