@@ -1,4 +1,4 @@
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default interface Biome {
     color: string;

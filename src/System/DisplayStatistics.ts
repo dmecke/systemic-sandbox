@@ -5,7 +5,7 @@ import MatchupPro12 from '../assets/fonts/MatchupPro12';
 import Plant from '../Component/Plant';
 import Query from '../Engine/ECS/Query';
 import System from '../Engine/ECS/System';
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class DisplayStatistics extends System {
     private offset = 0;

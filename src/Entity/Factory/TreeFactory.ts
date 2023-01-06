@@ -4,7 +4,7 @@ import EntityFactory from '../../Engine/ECS/EntityFactory';
 import ImageLoader from '../../Engine/Assets/ImageLoader';
 import Position from '../../Component/Position';
 import Sprite from '../../Component/Sprite';
-import Vector from '../../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 import config from '../../assets/config.json';
 
 export default class TreeFactory {

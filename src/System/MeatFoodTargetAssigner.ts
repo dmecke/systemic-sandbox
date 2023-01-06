@@ -1,4 +1,4 @@
-import Circle from '../Engine/Math/Circle';
+import Circle from '@dmecke/game-engine/lib/Math/Circle';
 import EatsMeat from '../Component/EatsMeat';
 import Food from '../Component/Food';
 import Hunger from '../Component/Hunger';

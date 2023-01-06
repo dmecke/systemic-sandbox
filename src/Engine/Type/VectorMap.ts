@@ -1,4 +1,4 @@
-import Vector from '../Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class VectorMap {
     private map: Map<number, Map<number, Vector>> = new Map();

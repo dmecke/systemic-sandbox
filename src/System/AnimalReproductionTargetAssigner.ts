@@ -1,5 +1,5 @@
 import Animal from '../Component/Animal';
-import Circle from '../Engine/Math/Circle';
+import Circle from '@dmecke/game-engine/lib/Math/Circle';
 import Gender from '../Component/Gender';
 import MovementTarget from '../Component/MovementTarget';
 import Position from '../Component/Position';

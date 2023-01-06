@@ -1,5 +1,5 @@
 import Biome from '../Biome/Biome';
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class BiomeMap {
     private map = new Map();

@@ -5,7 +5,7 @@ import ImageLoader from '../Engine/Assets/ImageLoader';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
 import System from '../Engine/ECS/System';
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 import config from '../assets/config.json';
 
 export default class GroundLayerRenderer extends System {

@@ -1,5 +1,5 @@
 import Gamepad from './Gamepad';
-import Vector from '../Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class Gamepads {
 
@@ -53,7 +53,7 @@ export default class Gamepads {
     getAnalog(index: number): Vector {
         let analog = Vector.null();
         this.gamepads.forEach(gamepad => analog = analog.add(gamepad.getAnalog(index)));
-        if (analog.length() > 1) {
+        if (analog.length > 1) {
             analog = analog.normalize();
         }
 

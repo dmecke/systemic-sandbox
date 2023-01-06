@@ -2,7 +2,7 @@ import FontFace from './FontFace';
 import Glyph from './Glyph';
 import ImageLoader from '../Assets/ImageLoader';
 import TextAlign from './TextAlign';
-import Vector from '../Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class Font {
 

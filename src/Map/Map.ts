@@ -1,8 +1,8 @@
-import Area from '../Engine/Math/Area';
+import Area from '@dmecke/game-engine/lib/Math/Area';
 import Biome from '../Biome/Biome';
 import BiomeMap from '../ProceduralGeneration/BiomeMap';
-import Rng from '../Engine/Math/Rng';
-import Vector from '../Engine/Math/Vector';
+import Rng from '@dmecke/game-engine/lib/Math/Rng';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 import Water from '../Biome/Water';
 import config from '../assets/config.json';
 
@@ -17,13 +17,12 @@ export default class Map {
     }
 
     getRandomLandGridCellInArea(area: Area): Vector {
-        const rng = Rng.getInstance(window.seed.toString());
         let position: Vector;
         let counter = 0;
         do {
             position = new Vector(
-                rng.randomBetween(area.left, area.right),
-                rng.randomBetween(area.top, area.bottom),
+                Rng.instance.randomIntBetween(area.left, area.right - 1),
+                Rng.instance.randomIntBetween(area.top, area.bottom - 1),
             );
             if (counter++ >= 100) {
                 throw new Error(`Infinite loop: Trying to find a no-water tile in area ${area.toString()}.`);

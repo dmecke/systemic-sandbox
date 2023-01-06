@@ -7,7 +7,7 @@ import ImageLoader from './Engine/Assets/ImageLoader';
 import MoistureMapRenderer from './Renderer/MoistureMapRenderer';
 import TileRenderer from './Renderer/TileRenderer';
 import TreeMapRenderer from './Renderer/TreeMapRenderer';
-import Vector from './Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 import alea from 'alea';
 import {createNoise2D} from 'simplex-noise';
 import generateBiomeMap from './ProceduralGeneration/generateBiomeMap';

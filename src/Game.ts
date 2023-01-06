@@ -5,7 +5,7 @@ import AnimalReproductionTargetAssigner from './System/AnimalReproductionTargetA
 import Animator from './System/Animator';
 import ApplyFireDamage from './System/ApplyFireDamage';
 import ApplyHungerDamage from './System/ApplyHungerDamage';
-import Area from './Engine/Math/Area';
+import Area from '@dmecke/game-engine/lib/Math/Area';
 import BiomeMap from './ProceduralGeneration/BiomeMap';
 import CameraComponent from './Component/CameraComponent';
 import CameraFocusUpdater from './System/CameraFocusUpdater';
@@ -48,7 +48,7 @@ import TreeFactory from './Entity/Factory/TreeFactory';
 import TreeMap from './ProceduralGeneration/TreeMap';
 import UpdateQuadTree from './System/UpdateQuadTree';
 import UpdateZIndex from './System/UpdateZIndex';
-import Vector from './Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 import WolfFactory from './Entity/Factory/WolfFactory';
 import config from './assets/config.json';
 import entityFactoryMap from './Entity/entityFactoryMap';

@@ -4,7 +4,7 @@ import Map from '../Map/Map';
 import Plant from '../Component/Plant';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
-import Rng from '../Engine/Math/Rng';
+import Rng from '@dmecke/game-engine/lib/Math/Rng';
 import System from '../Engine/ECS/System';
 import config from '../assets/config.json';
 
@@ -23,7 +23,7 @@ export default class GrassGrower extends System {
         for (let i = 0; i < config.systems.grassGrowRate; i++) {
             const targetPosition = this.map.getRandomLandGridCell();
             const biome = this.map.getBiomeAt(targetPosition);
-            if (Rng.getInstance(window.seed.toString()).chance(biome.grassChance)) {
+            if (Rng.instance.chance(biome.grassChance)) {
                 if (grass.filter(([position]) => position.position.divide(config.tileSize).distanceTo(targetPosition) < 2).length === 0) {
                     this.grassFactory.create(targetPosition.multiply(config.tileSize));
                 }

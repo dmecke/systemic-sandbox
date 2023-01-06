@@ -1,4 +1,4 @@
-import Circle from '../Math/Circle';
+import Circle from '@dmecke/game-engine/lib/Math/Circle';
 import Component from './Component';
 import ComponentClass from './ComponentClass';
 import Entity from './Entity';

@@ -1,5 +1,5 @@
 import MouseListener from './MouseListener';
-import Vector from '../Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class Mouse {
 

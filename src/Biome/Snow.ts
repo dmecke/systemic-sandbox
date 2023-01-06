@@ -1,5 +1,5 @@
 import Biome from './Biome';
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class Snow implements Biome {
     color = '#ffffff';

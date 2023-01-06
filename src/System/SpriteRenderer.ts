@@ -7,7 +7,7 @@ import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
 import Sprite from '../Component/Sprite';
 import System from '../Engine/ECS/System';
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class SpriteRenderer extends System {
     update(query: Query): void {

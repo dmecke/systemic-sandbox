@@ -1,5 +1,5 @@
 import Component from '../Engine/ECS/Component';
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class Focus extends Component {
 

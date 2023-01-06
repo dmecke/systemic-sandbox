@@ -1,7 +1,7 @@
-import Area from '../Math/Area';
-import Circle from '../Math/Circle';
+import Area from '@dmecke/game-engine/lib/Math/Area';
+import Circle from '@dmecke/game-engine/lib/Math/Circle';
 import Position from '../../Component/Position';
-import Vector from '../Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class QuadTree<T> {
     private elements: (Position&Readonly<{ data: T }>)[] = [];

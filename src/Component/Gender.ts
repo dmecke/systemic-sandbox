@@ -1,5 +1,5 @@
 import Component from '../Engine/ECS/Component';
-import Rng from '../Engine/Math/Rng';
+import Rng from '@dmecke/game-engine/lib/Math/Rng';
 
 export default class Gender extends Component {
 
@@ -14,7 +14,7 @@ export default class Gender extends Component {
     }
 
     static random(): Gender {
-        return new Gender(Rng.getInstance(window.seed.toString()).choose(['male', 'female']));
+        return new Gender(Rng.instance.choose(['male', 'female']));
     }
 
     static fromData(data: { gender: 'male'|'female' }): Gender {

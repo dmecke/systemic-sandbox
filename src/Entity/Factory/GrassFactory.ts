@@ -1,7 +1,7 @@
 import Entity from '../../Engine/ECS/Entity';
 import EntityFactory from '../../Engine/ECS/EntityFactory';
 import Position from '../../Component/Position';
-import Vector from '../../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class GrassFactory {
     constructor(

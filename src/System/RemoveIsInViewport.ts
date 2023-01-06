@@ -1,10 +1,10 @@
-import Area from '../Engine/Math/Area';
+import Area from '@dmecke/game-engine/lib/Math/Area';
 import CameraComponent from '../Component/CameraComponent';
 import InViewport from '../Component/InViewport';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
 import System from '../Engine/ECS/System';
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 import config from '../assets/config.json';
 
 export default class RemoveIsInViewport extends System {

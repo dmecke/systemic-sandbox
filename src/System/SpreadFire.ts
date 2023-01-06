@@ -1,10 +1,10 @@
-import Circle from '../Engine/Math/Circle';
+import Circle from '@dmecke/game-engine/lib/Math/Circle';
 import Entity from '../Engine/ECS/Entity';
 import Flammable from '../Component/Flammable';
 import OnFire from '../Component/OnFire';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
-import Rng from '../Engine/Math/Rng';
+import Rng from '@dmecke/game-engine/lib/Math/Rng';
 import System from '../Engine/ECS/System';
 import config from '../assets/config.json';
 
@@ -20,7 +20,7 @@ export default class SpreadFire extends System {
                 .ecs
                 .query
                 .allEntitiesAt(new Circle(onFirePositionComponent.position, config.systems.fireSpreadDistance), Flammable, Position)
-                .filter(() => Rng.getInstance(window.seed.toString()).chance(50))
+                .filter(() => Rng.instance.chance(50))
                 .filter(([entity]) => !this.ecs.query.hasComponent((entity as Entity), OnFire))
                 .forEach(([entity, flammableComponent]) => {
                     (flammableComponent as Flammable).resistance--;

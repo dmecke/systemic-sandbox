@@ -1,5 +1,5 @@
 import Listener from './Listener';
-import Vector from '../Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class Gamepad {
 

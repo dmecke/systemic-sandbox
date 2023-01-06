@@ -1,5 +1,5 @@
 import CanvasSprite from '../Canvas/CanvasSprite';
-import Vector from '../Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class ImageLoader {
 

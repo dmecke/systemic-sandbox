@@ -4,7 +4,7 @@ import Focus from '../Component/Focus';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
 import System from '../Engine/ECS/System';
-import Vector from '../Engine/Math/Vector';
+import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class CameraFocusUpdater extends System {
     update(query: Query): void {
