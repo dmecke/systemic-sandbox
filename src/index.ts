@@ -3,7 +3,7 @@ import Canvas from './Engine/Canvas/Canvas';
 import Debugging from './Debug/Debugging';
 import Game from './Game';
 import HeightMapRenderer from './Renderer/HeightMapRenderer';
-import ImageLoader from './Engine/Assets/ImageLoader';
+import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import MoistureMapRenderer from './Renderer/MoistureMapRenderer';
 import TileRenderer from './Renderer/TileRenderer';
 import TreeMapRenderer from './Renderer/TreeMapRenderer';

@@ -1,4 +1,4 @@
-import ImageLoader from '../Engine/Assets/ImageLoader';
+import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import InViewport from '../Component/InViewport';
 import OnFire from '../Component/OnFire';
 import Position from '../Component/Position';
@@ -18,7 +18,7 @@ export default class FireRenderer extends System {
                     new Vector(0, 0),
                     size,
                     positionComponent.position.subtract(sprite.anchor).add(sprite.size.subtract(size).divide(2)),
-                ).draw();
+                ).draw(window.ctx);
             } catch (e) {
                 throw new Error(`Could not render tile "${(image)}" at ${positionComponent.position.x}|${positionComponent.position.y}.\n\n${e}`);
             }

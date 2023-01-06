@@ -26,6 +26,9 @@ jobs:
             - name: build
               run: yarn run build
 
+            - name: copy assets
+              run: cp -r assets/* dist/
+
             - name: add metadata
               run: |
                   touch dist/meta

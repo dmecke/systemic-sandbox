@@ -12,7 +12,7 @@ module.exports = {
             extensions: ['.ts'],
         }),
         new HtmlWebpackPlugin({
-            title: 'Noise',
+            title: 'Systemic Sandbox',
             template: './src/index.html',
         }),
     ],
@@ -33,7 +33,7 @@ module.exports = {
         extensions: ['.ts', '.js'],
     },
     devServer: {
-        static: './dist',
+        static: './assets',
         hot: true,
     },
 }

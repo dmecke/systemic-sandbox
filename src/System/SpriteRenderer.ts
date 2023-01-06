@@ -1,7 +1,7 @@
 import Animation from '../Component/Animation';
 import DirectionComponent from '../Component/DirectionComponent';
 import Entity from '../Engine/ECS/Entity';
-import ImageLoader from '../Engine/Assets/ImageLoader';
+import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import InViewport from '../Component/InViewport';
 import Position from '../Component/Position';
 import Query from '../Engine/ECS/Query';
@@ -21,7 +21,7 @@ export default class SpriteRenderer extends System {
                     this.getOffset(entity, sprite),
                     sprite.size,
                     position,
-                ).draw();
+                ).draw(window.ctx);
             } catch (e) {
                 throw new Error(`Could not render tile "${(sprite.image)}" at ${position.x}|${position.y}.\n\n${e}`);
             }

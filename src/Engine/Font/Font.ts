@@ -1,6 +1,6 @@
 import FontFace from './FontFace';
 import Glyph from './Glyph';
-import ImageLoader from '../Assets/ImageLoader';
+import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import TextAlign from './TextAlign';
 import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
@@ -56,7 +56,7 @@ export default class Font {
                 glyph.position,
                 glyph.size,
                 position,
-            ).draw();
+            ).draw(window.ctx);
             position = position.addX(glyph.size.x + 1);
         }
     }

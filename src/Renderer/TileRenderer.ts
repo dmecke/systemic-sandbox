@@ -1,4 +1,4 @@
-import ImageLoader from '../Engine/Assets/ImageLoader';
+import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import config from '../assets/config.json';
 import factory from '../Biome/Factory';
 

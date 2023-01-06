@@ -2,7 +2,7 @@ import BiomeComponent from '../../Component/BiomeComponent';
 import BiomeMap from '../../ProceduralGeneration/BiomeMap';
 import Entity from '../../Engine/ECS/Entity';
 import EntityFactory from '../../Engine/ECS/EntityFactory';
-import ImageLoader from '../../Engine/Assets/ImageLoader';
+import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import Vector from '@dmecke/game-engine/lib/Math/Vector';
 import VectorMap from '../../Engine/Type/VectorMap';
 import config from '../../assets/config.json';
