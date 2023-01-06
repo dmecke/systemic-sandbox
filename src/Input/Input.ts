@@ -1,4 +1,4 @@
-import Mouse from '../Engine/Input/Mouse';
+import Mouse from '@dmecke/game-engine/lib/Input/Mouse';
 import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
 export default class Input {

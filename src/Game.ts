@@ -155,9 +155,8 @@ export default class Game {
     }
 
     private handleClick(position: Vector): void {
-        const factor = window.canvas.canvas.clientWidth / window.canvas.canvas.width;
         const [positionComponent] = this.ecs.query.oneComponent(Position, CameraComponent);
-        const target = positionComponent.position.add(position.divide(factor)).round();
+        const target = positionComponent.position.add(position).round();
 
         const entities = this
             .ecs
