@@ -2,6 +2,7 @@ import BiomeMap from './ProceduralGeneration/BiomeMap';
 import Canvas from '@dmecke/game-engine/lib/Canvas/Canvas';
 import Debugging from './Debug/Debugging';
 import Game from './Game';
+import GameLoop from '@dmecke/game-engine/lib/GameLoop/GameLoop';
 import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import TileRenderer from './Renderer/TileRenderer';
 import TreeMap from './ProceduralGeneration/TreeMap';
@@ -23,6 +24,9 @@ export default class Application {
             ]).then(() => {
                 tileRenderer.render();
                 window.game = new Game(biomeMap, treeMap);
+
+                const loop = new GameLoop();
+                loop.update = delta => window.game.update(delta);
             });
         });
     }

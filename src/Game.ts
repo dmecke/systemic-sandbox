@@ -77,11 +77,9 @@ export default class Game {
         this.createEntities();
 
         Input.getInstance().onActionPressed(position => this.handleClick(position));
-
-        requestAnimationFrame(() => this.update());
     }
 
-    update(): void {
+    update(delta: number): void {
         if (window.debugging.showFps) {
             this.fps.tick();
         }
@@ -90,9 +88,7 @@ export default class Game {
             document.getElementById('fps').innerText = `${this.fps.fps.toString()} fps`;
         }
 
-        this.ecs.update();
-
-        requestAnimationFrame(() => this.update());
+        this.ecs.update(delta);
     }
 
     private createSystems(): void {

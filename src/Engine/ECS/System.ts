@@ -5,5 +5,5 @@ export default abstract class System {
 
     ecs: ECS;
 
-    abstract update(query: Query): void;
+    abstract update(query: Query, delta: number): void;
 }

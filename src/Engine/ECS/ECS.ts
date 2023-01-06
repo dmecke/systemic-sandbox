@@ -58,9 +58,9 @@ export default class ECS {
         this.systems.delete(system);
     }
 
-    update(): void {
+    update(delta: number): void {
         for (const system of this.systems.values()) {
-            system.update(this.query);
+            system.update(this.query, delta);
         }
 
         while (this.entitiesToDestroy.length > 0) {
