@@ -1,6 +1,6 @@
 import Component from './Component';
 import Entity from './Entity';
-import QuadTree from '../Type/QuadTree';
+import QuadTree from '@dmecke/game-engine/lib/Type/QuadTree';
 import Query from './Query';
 import System from './System';
 

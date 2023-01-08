@@ -2,7 +2,7 @@ import Circle from '@dmecke/game-engine/lib/Math/Circle';
 import Component from './Component';
 import ComponentClass from './ComponentClass';
 import Entity from './Entity';
-import QuadTree from '../Type/QuadTree';
+import QuadTree from '@dmecke/game-engine/lib/Type/QuadTree';
 
 export default class Query {
 

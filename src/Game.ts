@@ -35,7 +35,7 @@ import MovementTargetRemover from './System/MovementTargetRemover';
 import OnFire from './Component/OnFire';
 import PlantFoodTargetAssigner from './System/PlantFoodTargetAssigner';
 import Position from './Component/Position';
-import QuadTree from './Engine/Type/QuadTree';
+import QuadTree from '@dmecke/game-engine/lib/Type/QuadTree';
 import RandomMovementTargetAssigner from './System/RandomMovementTargetAssigner';
 import RemoveIsInViewport from './System/RemoveIsInViewport';
 import RemoveWithoutHealth from './System/RemoveWithoutHealth';
