@@ -4,7 +4,7 @@ import Entity from '../../Engine/ECS/Entity';
 import EntityFactory from '../../Engine/ECS/EntityFactory';
 import ImageLoader from '@dmecke/game-engine/lib/AssetLoader/ImageLoader';
 import Vector from '@dmecke/game-engine/lib/Math/Vector';
-import VectorMap from '../../Engine/Type/VectorMap';
+import VectorGrid from '../../Engine/Type/Grid/VectorGrid';
 import config from '../../assets/config.json';
 
 export default class GroundFactory {
@@ -22,7 +22,7 @@ export default class GroundFactory {
 
     private createGroundLayerComponent(): BiomeComponent {
         const size = config.generation.size;
-        const spriteOffsets = new VectorMap();
+        const spriteOffsets = new VectorGrid();
         for (let y = 0; y < size.y; y++) {
             for (let x = 0; x < size.x; x++) {
                 spriteOffsets.set(x, y, this.getSpriteOffset(new Vector(x, y), this.biomeMap.get(x, y).constructor.name, 'Grassland'));

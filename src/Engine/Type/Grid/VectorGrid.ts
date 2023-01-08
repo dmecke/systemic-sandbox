@@ -1,6 +1,6 @@
 import Vector from '@dmecke/game-engine/lib/Math/Vector';
 
-export default class VectorMap {
+export default class VectorGrid {
     private map: Map<number, Map<number, Vector>> = new Map();
 
     set(x: number, y: number, vector: Vector): void {

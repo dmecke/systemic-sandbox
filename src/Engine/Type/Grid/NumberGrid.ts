@@ -1,4 +1,4 @@
-export default class NumberMap {
+export default class NumberGrid {
     private map: Map<number, Map<number, number>> = new Map();
 
     set(x: number, y: number, number: number): void {
