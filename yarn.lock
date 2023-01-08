@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dmecke/game-engine@^1.3.2":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@dmecke/game-engine/-/game-engine-1.3.2.tgz#02a8ddfb494b9f0f12c3668e1812833b879f1330"
-  integrity sha512-DYaxPDIJSf0Y9nhqNOtLNog6oHV64hmLY0/W6/sg9nLN+a92zdjUXZuxti/Byp8mF3zb3WMycvMDUhf1mdM+5A==
+"@dmecke/game-engine@^1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@dmecke/game-engine/-/game-engine-1.3.3.tgz#ded49605a2dd024d0b7fad16dd5fea4a7761f9ab"
+  integrity sha512-TFaE3j41d0VSPK0P5uV0+1sjDAmovSByStLq+4GMzl5bCzNaVW7MM8tqmYG2/pthDegncCU7oIdLnuR3TS1WJg==
   dependencies:
     howler "^2.2.3"
     nanoid "^4.0.0"
